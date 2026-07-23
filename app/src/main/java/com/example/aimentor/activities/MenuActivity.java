@@ -130,4 +130,10 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void selectTab(int position) {
+        if (viewPager != null) {
+            viewPager.setCurrentItem(position);
+        }
+    }
 }

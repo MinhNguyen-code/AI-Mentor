@@ -1,19 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CategoryFragment"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="@drawable/bg_glossy_dark"
+    tools:context=".Fragments.CategoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Header Section -->
     <TextView
+        android:id="@+id/tvCatalogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category page"
+        android:text="BTEC Course Catalog"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
-        />
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvCatalogSub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage academic programs and courses"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvCatalogTitle"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Create Course Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreateCourse"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:text="+ Create New Course"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:backgroundTint="@color/accent_blue_dark"
+        app:cornerRadius="12dp"
+        app:rippleColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvCatalogSub"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Course List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCourses"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="?actionBarSize"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateCourse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

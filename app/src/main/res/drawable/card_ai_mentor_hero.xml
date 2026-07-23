@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Gradient glass background -->
+    <gradient
+        android:startColor="#2600E5FF"
+        android:centerColor="#1B121B2A"
+        android:endColor="#26D500F9"
+        android:angle="45"
+        android:type="linear" />
+    
+    <!-- Neon cyan border -->
+    <stroke
+        android:width="1.5dp"
+        android:color="#6600E5FF" />
+    
+    <corners android:radius="20dp" />
+</shape>

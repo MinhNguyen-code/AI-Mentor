@@ -8,6 +8,7 @@ public class UserModel {
     private String email;
     private String phone;
     private int role;
+    private String avatar;
     private String createdAt;
     private String updatedAt;
 
@@ -86,5 +87,13 @@ public class UserModel {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

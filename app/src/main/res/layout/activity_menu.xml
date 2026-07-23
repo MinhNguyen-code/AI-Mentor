@@ -6,41 +6,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:fitsSystemWindows="true"
+    android:background="@drawable/bg_glossy_dark"
     tools:openDrawer="start">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:id="@+id/toolbar"
-            android:background="#CAEEF2"
+            android:background="@color/bg_dark_end"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
             android:elevation="4dp"/>
+
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewPager"
             android:layout_below="@id/toolbar"
+            android:layout_above="@id/bottomNavigation"
             />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/viewPager"
             android:id="@+id/bottomNavigation"
-            android:background="@color/white"
+            android:layout_alignParentBottom="true"
+            android:background="@color/bg_dark_end"
+            app:backgroundTint="@color/bg_dark_end"
             app:menu="@menu/bottom_navigation"
-            app:itemIconTint="@color/black"
-            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/accent_blue"
+            app:itemTextColor="@color/text_primary"
             app:labelVisibilityMode="labeled"
             />
     </RelativeLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/drawerNavigation"
+        android:background="@color/bg_dark_start"
         app:menu="@menu/drawer_navigation"
         app:headerLayout="@layout/header_menu"
-        app:itemTextColor="#0C9FE4"
-        app:itemIconTint="#3F51B5"/>
+        app:itemTextColor="@color/text_primary"
+        app:itemIconTint="@color/accent_blue"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>

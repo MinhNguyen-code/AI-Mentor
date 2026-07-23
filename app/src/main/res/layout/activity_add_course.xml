@@ -34,51 +34,39 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Logo -->
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="120dp"
-                android:layout_height="90dp"
-                android:src="@drawable/logo_btec"
-                android:layout_marginTop="12dp"
-                android:contentDescription="BTEC Logo"
+            <!-- Screen Title -->
+            <TextView
+                android:id="@+id/tvScreenTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create New Course"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/tvUniversityName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Portal Title -->
-            <TextView
-                android:id="@+id/tvRegisterTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register an Account"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/imgLogo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <!-- Glossy Card Container -->
+            <!-- Glossy Card Form -->
             <LinearLayout
-                android:id="@+id/signUpCard"
+                android:id="@+id/formCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/card_glossy_glass"
                 android:padding="24dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/tvRegisterTitle"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/tvScreenTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <!-- Username TextInput -->
+                <!-- Course Code Input -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilUsername"
+                    android:id="@+id/tilCourseCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Username..."
+                    android:hint="Course Code (e.g. SD201)"
                     app:hintTextColor="@color/accent_blue"
                     app:boxStrokeColor="@color/accent_blue"
                     app:boxStrokeWidth="1dp"
@@ -88,51 +76,21 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtUsername"
+                        android:id="@+id/edtCourseCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
+                        android:inputType="textCapCharacters"
+                        android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Password TextInput -->
+                <!-- Course Title Input -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilPassword"
+                    android:id="@+id/tilCourseTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Enter Password..."
-                    app:hintTextColor="@color/accent_blue"
-                    app:boxStrokeColor="@color/accent_blue"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/text_secondary"
-                    app:startIconTint="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_primary"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Email TextInput -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Enter Email..."
+                    android:layout_marginTop="16dp"
+                    android:hint="Course Title"
                     app:hintTextColor="@color/accent_blue"
                     app:boxStrokeColor="@color/accent_blue"
                     app:boxStrokeWidth="1dp"
@@ -142,23 +100,21 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtEmail"
+                        android:id="@+id/edtCourseTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
+                        android:inputType="textCapWords"
+                        android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Phone TextInput -->
+                <!-- Credits Input -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilPhone"
+                    android:id="@+id/tilCourseCredits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Enter phone number..."
+                    android:layout_marginTop="16dp"
+                    android:hint="Credits (e.g. 15)"
                     app:hintTextColor="@color/accent_blue"
                     app:boxStrokeColor="@color/accent_blue"
                     app:boxStrokeWidth="1dp"
@@ -168,84 +124,78 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtPhone"
+                        android:id="@+id/edtCourseCredits"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:inputType="phone"
-                        android:maxLines="1"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
+                        android:inputType="number"
+                        android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Submit Button -->
+                <!-- Description Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCourseDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Course Description..."
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtCourseDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:scrollbars="vertical"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Save Button -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSubmit"
+                    android:id="@+id/btnSaveCourse"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Submit"
+                    android:text="Save Course"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     app:backgroundTint="@color/accent_blue_dark"
                     app:cornerRadius="12dp"
-                    app:rippleColor="@color/white" />
+                    app:rippleColor="@color/white"/>
 
-                <!-- Cancel Button -->
+                <!-- Cancel/Back Button -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCancel"
+                    android:id="@+id/btnBackCourse"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="Cancel"
                     android:textSize="16sp"
                     android:textColor="@color/text_secondary"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     app:strokeColor="@color/glass_card_stroke"
                     app:cornerRadius="12dp"/>
 
             </LinearLayout>
 
-            <!-- Bottom Question Link -->
+            <!-- Footer -->
             <TextView
-                android:id="@+id/tvQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Do you have an account?"
-                android:textColor="@color/text_secondary"
-                android:textSize="15sp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/signUpCard"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/tvLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="System Login"
-                android:textColor="@color/accent_blue"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/tvQuestion"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/tvFooter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Copyright © 2026 Pearson BTEC"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/tvLogin"
+                app:layout_constraintTop_toBottomOf="@id/formCard"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

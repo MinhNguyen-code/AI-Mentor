@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Deep midnight void base background -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#030712"
+                android:centerColor="#0B1021"
+                android:endColor="#111827"
+                android:angle="135"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Top-Right Cyan Radial Aura -->
+    <item android:top="-120dp" android:right="-100dp" android:width="360dp" android:height="360dp">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#3300E5FF"
+                android:endColor="#00000000"
+                android:gradientRadius="180dp"
+                android:type="radial" />
+        </shape>
+    </item>
+
+    <!-- Middle-Left Cosmic Indigo Radial Aura -->
+    <item android:top="200dp" android:left="-130dp" android:width="380dp" android:height="380dp">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#286366F1"
+                android:endColor="#00000000"
+                android:gradientRadius="190dp"
+                android:type="radial" />
+        </shape>
+    </item>
+
+    <!-- Bottom-Right Aurora Pink Radial Glow -->
+    <item android:bottom="-110dp" android:right="-90dp" android:width="340dp" android:height="340dp">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#24EC4899"
+                android:endColor="#00000000"
+                android:gradientRadius="170dp"
+                android:type="radial" />
+        </shape>
+    </item>
+</layer-list>

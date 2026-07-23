@@ -1,8 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AIMentor" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Brand colors -->
+        <item name="colorPrimary">@color/accent_blue</item>
+        <item name="colorSecondary">@color/accent_purple</item>
+        
+        <!-- Background and Window settings -->
+        <item name="android:windowBackground">@color/bg_dark_start</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <!-- Customize default TextInput styles for Dark Theme -->
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+        <item name="editTextStyle">@style/GlossyEditTextStyle</item>
+    </style>
+
+    <!-- Custom style for EditText inside OutlinedBox TextInputLayout -->
+    <style name="GlossyEditTextStyle" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Theme.AIMentor" parent="Base.Theme.AIMentor" />

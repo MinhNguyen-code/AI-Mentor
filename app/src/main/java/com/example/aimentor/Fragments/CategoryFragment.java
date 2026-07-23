@@ -1,60 +1,49 @@
 package com.example.aimentor.Fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aimentor.R;
+import com.example.aimentor.activities.AddCourseActivity;
+import com.example.aimentor.adapters.CourseAdapter;
+import com.example.aimentor.models.CourseModel;
+import com.example.aimentor.repository.CourseRepository;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CategoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CategoryFragment extends Fragment {
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class CategoryFragment extends Fragment implements CourseAdapter.OnCourseDeleteListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Button btnCreateCourse;
+    private RecyclerView rvCourses;
+    private CourseAdapter courseAdapter;
+    private CourseRepository courseRepository;
+    private List<CourseModel> coursesList;
 
     public CategoryFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CategoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CategoryFragment newInstance(String param1, String param2) {
-        CategoryFragment fragment = new CategoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static CategoryFragment newInstance() {
+        return new CategoryFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        courseRepository = new CourseRepository(getContext());
     }
 
     @Override
@@ -62,5 +51,71 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Bind layout views
+        btnCreateCourse = view.findViewById(R.id.btnCreateCourse);
+        rvCourses = view.findViewById(R.id.rvCourses);
+
+        // Setup LayoutManager
+        rvCourses.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Setup button action to navigate to AddCourseActivity
+        btnCreateCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Load or reload database course items when fragment becomes active
+        loadCourses();
+    }
+
+    private void loadCourses() {
+        if (courseRepository != null) {
+            coursesList = courseRepository.getAllCourses();
+            courseAdapter = new CourseAdapter(coursesList, this);
+            rvCourses.setAdapter(courseAdapter);
+        }
+    }
+
+    @Override
+    public void onCourseDelete(final int courseId, final int position) {
+        // Show confirmation dialog before deleting course
+        if (getContext() == null) return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor);
+        builder.setTitle("Delete Course")
+                .setMessage("Are you sure you want to delete this course from the catalog?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        performCourseDeletion(courseId, position);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void performCourseDeletion(int courseId, int position) {
+        int result = courseRepository.deleteCourse(courseId);
+        if (result > 0) {
+            if (courseAdapter != null) {
+                courseAdapter.removeCourseAt(position);
+            }
+            Toast.makeText(getContext(), "Course deleted successfully.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Failed to delete course.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
