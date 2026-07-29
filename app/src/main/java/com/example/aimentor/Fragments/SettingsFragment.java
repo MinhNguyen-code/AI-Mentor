@@ -160,25 +160,18 @@ public class SettingsFragment extends Fragment {
         if (getContext() == null) return;
         
         if (TextUtils.isEmpty(path)) {
-            // Set default icon and restore primary accent tint
-            imgAvatar.setImageResource(R.drawable.account_icon);
-            imgAvatar.setImageTintList(android.content.res.ColorStateList.valueOf(
-                    getContext().getResources().getColor(R.color.accent_blue)
-            ));
+            setDefaultAvatar();
         } else {
             File file = new File(path);
             if (file.exists()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
                 if (bitmap != null) {
                     imgAvatar.setImageBitmap(bitmap);
-                    // Clear tint to display real image correctly
                     imgAvatar.setImageTintList(null);
                 } else {
-                    // Fallback to default
                     setDefaultAvatar();
                 }
             } else {
-                // Fallback to default
                 setDefaultAvatar();
             }
         }
@@ -188,7 +181,7 @@ public class SettingsFragment extends Fragment {
         if (getContext() == null) return;
         imgAvatar.setImageResource(R.drawable.account_icon);
         imgAvatar.setImageTintList(android.content.res.ColorStateList.valueOf(
-                getContext().getResources().getColor(R.color.accent_blue)
+                androidx.core.content.ContextCompat.getColor(requireContext(), R.color.accent_blue)
         ));
     }
 
