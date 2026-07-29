@@ -1,19 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.QuizFragment"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="@drawable/bg_ai_mentor_dashboard"
+    tools:context=".Fragments.QuizFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- 1. TOP HEADER BAR -->
+    <LinearLayout
+        android:id="@+id/headerChat"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quiz page"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</LinearLayout>
+        <!-- Avatar & Title -->
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_icon_circle_purple">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="🤖"
+                android:textSize="22sp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BTEC AI Mentor Chatbot"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="2dp">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bg_icon_circle_blue"
+                    android:backgroundTint="@color/accent_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Online • Groq Llama 3.3 70B"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Clear Chat Button -->
+        <ImageView
+            android:id="@+id/btnClearChat"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@color/text_secondary"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="6dp"
+            android:contentDescription="Clear Chat History" />
+    </LinearLayout>
+
+    <!-- 2. QUICK CHIP SUGGESTIONS -->
+    <HorizontalScrollView
+        android:id="@+id/scrollChips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/headerChat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chipChat1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💡 Explain Java OOP"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chipChat2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📊 What is 3NF in SQL?"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chipChat3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌐 Explain REST API"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chipChat4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🛡️ Network Security Basics"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/chipChat5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📝 Quiz me on SD201!"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 3. RECYCLERVIEW FOR CHAT MESSAGES -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingVertical="8dp"
+        app:layout_constraintTop_toBottomOf="@id/scrollChips"
+        app:layout_constraintBottom_toTopOf="@id/inputCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 4. BOTTOM CHAT INPUT BAR -->
+    <LinearLayout
+        android:id="@+id/inputCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/card_glossy_glass"
+        android:padding="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="?actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/edtChatMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Ask your AI Mentor anything..."
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="@null"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:maxLines="4"
+            android:inputType="textCapSentences|textMultiLine" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSendMessage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="✨"
+            android:textSize="18sp"
+            android:padding="0dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/bg_btn_ai_glow"
+            app:cornerRadius="24dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:contentDescription="Send Message" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

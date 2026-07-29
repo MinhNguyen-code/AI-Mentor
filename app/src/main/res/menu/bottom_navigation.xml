@@ -9,7 +9,7 @@
         android:icon="@drawable/category_icon"
         android:id="@+id/Category_menu"/>
     <item
-        android:title="Quiz"
+        android:title="AI Chat"
         android:icon="@drawable/quiz_icon"
         android:id="@+id/Quiz_menu"/>
     <item

@@ -115,29 +115,24 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupActionListeners() {
-        // AI Mentor Interactive Prompt Box & Button
+        // AI Mentor Interactive Prompt Box & Button -> Navigate to AI Chatbot with prompt
         if (btnAskAi != null) {
             btnAskAi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = new Random().nextInt(aiTips.length);
-                    if (tvAiRecommendation != null) {
-                        tvAiRecommendation.setText(aiTips[index]);
-                    }
-                    Toast.makeText(getContext(), "🤖 AI Mentor generated a new study tip!", Toast.LENGTH_SHORT).show();
+                    QuizFragment.setPendingPrompt("Hello AI Mentor! Give me an interactive study tip and advice for today.");
+                    navigateToTab(2, "AI Chat");
                 }
             });
         }
 
-        // Quick Prompt Chips Click Handlers
+        // Quick Prompt Chips Click Handlers -> Navigate to AI Chatbot with specific prompts
         if (chipPrompt1 != null) {
             chipPrompt1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tvAiRecommendation != null) {
-                        tvAiRecommendation.setText("\"AI Tip: In Java OOP, remember to use encapsulated fields and getter/setter methods for clean code architecture.\"");
-                    }
-                    Toast.makeText(getContext(), "Selected: Java OOP Tip", Toast.LENGTH_SHORT).show();
+                    QuizFragment.setPendingPrompt("Explain Object-Oriented Programming (OOP) concepts in Java with clear code examples.");
+                    navigateToTab(2, "AI Chat");
                 }
             });
         }
@@ -146,10 +141,8 @@ public class HomeFragment extends Fragment {
             chipPrompt2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tvAiRecommendation != null) {
-                        tvAiRecommendation.setText("\"AI Tip: In DB201, 3NF (Third Normal Form) ensures zero transitive dependencies in your database tables.\"");
-                    }
-                    Toast.makeText(getContext(), "Selected: Database SQL ERD", Toast.LENGTH_SHORT).show();
+                    QuizFragment.setPendingPrompt("What is Third Normal Form (3NF) in Database Design? Why is it important?");
+                    navigateToTab(2, "AI Chat");
                 }
             });
         }
@@ -158,10 +151,8 @@ public class HomeFragment extends Fragment {
             chipPrompt3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tvAiRecommendation != null) {
-                        tvAiRecommendation.setText("\"AI Tip: Your next exam is SD201 Programming on Friday at 08:00 AM in Room 201.\"");
-                    }
-                    Toast.makeText(getContext(), "Selected: Next Exam Schedule", Toast.LENGTH_SHORT).show();
+                    QuizFragment.setPendingPrompt("What is the recommended study guide and schedule for Unit SD201 Programming?");
+                    navigateToTab(2, "AI Chat");
                 }
             });
         }
@@ -174,11 +165,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Navigation: switch to grades tab (Quiz tab - index 2)
+        // Navigation: switch to AI Chat tab (index 2)
         btnActionGrades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigateToTab(2, "Grades");
+                navigateToTab(2, "AI Chat");
             }
         });
 
