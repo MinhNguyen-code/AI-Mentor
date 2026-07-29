@@ -2,6 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+Properties localProperties = new Properties()
+File localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.newDataInputStream())
+}
+String groqApiKey = localProperties.getProperty('GROQ_API_KEY', '')
+
 android {
     namespace 'com.example.aimentor'
     compileSdk 36
@@ -14,6 +21,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GROQ_API_KEY", "\"${groqApiKey}\""
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
@@ -29,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity

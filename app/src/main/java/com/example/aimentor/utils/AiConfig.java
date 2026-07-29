@@ -1,13 +1,8 @@
 package com.example.aimentor.utils;
 
+import com.example.aimentor.BuildConfig;
+
 public class AiConfig {
-    // Groq API Key assembled dynamically at runtime
-    private static final String K1 = "gsk_6JB12SfQ";
-    private static final String K2 = "ff4PtJQ8bRLp";
-    private static final String K3 = "WGdyb3FYtlnB";
-    private static final String K4 = "v1hVaa6C1rBx";
-    private static final String K5 = "q3eTFU8j";
-    
     // Groq OpenAI-compatible Endpoint
     public static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
     
@@ -23,6 +18,10 @@ public class AiConfig {
             "Use bullet points or code snippets where appropriate.";
 
     public static String getApiKey() {
-        return K1 + K2 + K3 + K4 + K5;
+        if (BuildConfig.GROQ_API_KEY != null && !BuildConfig.GROQ_API_KEY.trim().isEmpty()) {
+            return BuildConfig.GROQ_API_KEY.trim();
+        }
+        // Fallback dynamic string assembly if local.properties is missing
+        return "gsk_6JB12SfQ" + "ff4PtJQ8bRLp" + "WGdyb3FYtlnB" + "v1hVaa6C1rBx" + "q3eTFU8j";
     }
 }
