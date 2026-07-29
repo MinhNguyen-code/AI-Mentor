@@ -32,7 +32,7 @@ public class AiMentorService {
         void onError(String errorMessage);
     }
 
-    public static void sendMessageToAi(List<ChatMessageModel> chatHistory, String newUserPrompt, AiResponseCallback callback) {
+    public static void sendMessageToAi(String selectedModel, List<ChatMessageModel> chatHistory, String newUserPrompt, AiResponseCallback callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -50,7 +50,10 @@ public class AiMentorService {
 
                     // Build JSON Payload
                     JSONObject jsonPayload = new JSONObject();
-                    jsonPayload.put("model", AiConfig.MODEL_NAME);
+                    String modelToUse = (selectedModel != null && !selectedModel.trim().isEmpty())
+                            ? selectedModel.trim()
+                            : AiConfig.MODEL_LLAMA_8B;
+                    jsonPayload.put("model", modelToUse);
                     jsonPayload.put("temperature", 0.7);
 
                     JSONArray messagesArray = new JSONArray();

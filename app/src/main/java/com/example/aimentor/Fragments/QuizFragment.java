@@ -1,5 +1,6 @@
 package com.example.aimentor.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +22,7 @@ import com.example.aimentor.R;
 import com.example.aimentor.adapters.ChatAdapter;
 import com.example.aimentor.models.ChatMessageModel;
 import com.example.aimentor.services.AiMentorService;
+import com.example.aimentor.utils.AiConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +31,9 @@ public class QuizFragment extends Fragment {
 
     private RecyclerView rvChatMessages;
     private EditText edtChatMessage;
-    private View btnSendMessage;
+    private View btnSendMessage, btnSelectModel;
     private ImageView btnClearChat;
+    private TextView tvSelectedModel;
     private TextView chipChat1, chipChat2, chipChat3, chipChat4, chipChat5;
 
     private static final List<ChatMessageModel> chatList = new ArrayList<>();
@@ -66,6 +70,8 @@ public class QuizFragment extends Fragment {
         edtChatMessage = view.findViewById(R.id.edtChatMessage);
         btnSendMessage = view.findViewById(R.id.btnSendMessage);
         btnClearChat = view.findViewById(R.id.btnClearChat);
+        btnSelectModel = view.findViewById(R.id.btnSelectModel);
+        tvSelectedModel = view.findViewById(R.id.tvSelectedModel);
 
         chipChat1 = view.findViewById(R.id.chipChat1);
         chipChat2 = view.findViewById(R.id.chipChat2);
@@ -81,38 +87,40 @@ public class QuizFragment extends Fragment {
         chatAdapter = new ChatAdapter(chatList);
         rvChatMessages.setAdapter(chatAdapter);
 
+        // Initialize Selected Model UI
+        updateModelSelectorUi();
+
+        // Setup Model Selection Click Listener
+        if (btnSelectModel != null) {
+            btnSelectModel.setOnClickListener(v -> showModelSelectionDialog());
+        }
+
         // Add Initial AI Welcome Message if empty
         if (chatList.isEmpty()) {
             chatList.add(new ChatMessageModel(
-                    "Hello! I am your BTEC AI Mentor 🤖.\n\nI'm powered by Llama 3.3 and ready to assist you with Programming (Java/C#), Database SQL, Web Development, Networking, Security, or any BTEC course questions!\n\nWhat would you like to study today?",
+                    "Hello! I am your BTEC AI Mentor 🤖.\n\nI'm ready to assist you with Programming (Java/C#), Database SQL, Web Development, Networking, Security, or any BTEC course questions!\n\n💡 Tip: You can switch AI models at the top to save tokens/credits (e.g. Llama 3.1 8B) or boost intelligence (Llama 3.3 70B).\n\nWhat would you like to explore today?",
                     false
             ));
             chatAdapter.notifyItemInserted(chatList.size() - 1);
         }
 
         // Setup Send Button Listener
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = edtChatMessage.getText().toString().trim();
-                if (!TextUtils.isEmpty(input)) {
-                    sendUserMessage(input);
-                }
+        btnSendMessage.setOnClickListener(v -> {
+            String input = edtChatMessage.getText().toString().trim();
+            if (!TextUtils.isEmpty(input)) {
+                sendUserMessage(input);
             }
         });
 
         // Setup Clear Chat Listener
-        btnClearChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatList.clear();
-                chatList.add(new ChatMessageModel(
-                        "Chat history cleared! 🤖 Ask me any question to start a fresh discussion.",
-                        false
-                ));
-                chatAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Chat history cleared", Toast.LENGTH_SHORT).show();
-            }
+        btnClearChat.setOnClickListener(v -> {
+            chatList.clear();
+            chatList.add(new ChatMessageModel(
+                    "Chat history cleared! 🤖 Ask me any question to start a fresh discussion.",
+                    false
+            ));
+            chatAdapter.notifyDataSetChanged();
+            Toast.makeText(getContext(), "Chat history cleared", Toast.LENGTH_SHORT).show();
         });
 
         // Setup Quick Suggestion Chips
@@ -124,6 +132,42 @@ public class QuizFragment extends Fragment {
             pendingPrompt = null; // Reset
             sendUserMessage(promptToSend);
         }
+    }
+
+    private void updateModelSelectorUi() {
+        if (tvSelectedModel != null && getContext() != null) {
+            String currentModelId = AiConfig.getSelectedModel(getContext());
+            String displayName = AiConfig.getModelDisplayName(currentModelId);
+            tvSelectedModel.setText(displayName + " ▼");
+        }
+    }
+
+    private void showModelSelectionDialog() {
+        if (getContext() == null) return;
+
+        String currentModelId = AiConfig.getSelectedModel(getContext());
+        int checkedItem = 0;
+        for (int i = 0; i < AiConfig.MODEL_IDS.length; i++) {
+            if (AiConfig.MODEL_IDS[i].equals(currentModelId)) {
+                checkedItem = i;
+                break;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor);
+        builder.setTitle("Select AI Model (Token Efficiency)");
+        builder.setSingleChoiceItems(AiConfig.MODEL_DISPLAY_NAMES, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String selectedId = AiConfig.MODEL_IDS[which];
+                AiConfig.setSelectedModel(getContext(), selectedId);
+                updateModelSelectorUi();
+                Toast.makeText(getContext(), "Switched AI Model: " + AiConfig.MODEL_DISPLAY_NAMES[which], Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     private void setupChipListeners() {
@@ -171,8 +215,11 @@ public class QuizFragment extends Fragment {
 
         isAiThinking = true;
 
+        // Get currently selected AI model
+        String selectedModel = AiConfig.getSelectedModel(getContext());
+
         // 4. Call Groq AI API Service
-        AiMentorService.sendMessageToAi(chatList, userPrompt, new AiMentorService.AiResponseCallback() {
+        AiMentorService.sendMessageToAi(selectedModel, chatList, userPrompt, new AiMentorService.AiResponseCallback() {
             @Override
             public void onSuccess(String aiReply) {
                 isAiThinking = false;

@@ -51,11 +51,17 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/btnSelectModel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="2dp">
+                android:background="@drawable/card_glossy_glass"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:layout_marginTop="3dp"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="6dp"
@@ -64,9 +70,10 @@
                     android:backgroundTint="@color/accent_blue" />
 
                 <TextView
+                    android:id="@+id/tvSelectedModel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Online • Groq Llama 3.3 70B"
+                    android:text="⚡ Llama 3.1 8B (Economical) ▼"
                     android:textColor="@color/accent_blue"
                     android:textSize="11sp"
                     android:textStyle="bold"
