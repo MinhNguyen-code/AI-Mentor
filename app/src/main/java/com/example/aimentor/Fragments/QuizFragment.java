@@ -41,7 +41,7 @@ public class QuizFragment extends Fragment {
     private EditText edtChatMessage;
     private View btnSendMessage, btnSelectModel;
     private ImageView btnClearChat;
-    private TextView tvSelectedModel, btnAttachImage;
+    private TextView tvSelectedModel, btnAttachImage, btnShowHistory;
     private TextView chipChat1, chipChat2, chipChat3, chipChat4, chipChat5;
 
     private static final List<ChatMessageModel> chatList = new ArrayList<>();
@@ -95,9 +95,6 @@ public class QuizFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_quiz, container, false);
     }
-
-    private TextView tvSelectedModel, btnAttachImage, btnShowHistory;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
