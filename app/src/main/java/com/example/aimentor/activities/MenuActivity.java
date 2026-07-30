@@ -30,6 +30,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     MenuItem menuItemLogout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         bottomNavigationView = findViewById(R.id.bottomNavigation);

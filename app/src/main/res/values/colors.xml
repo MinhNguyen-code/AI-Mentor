@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Deep Glossy Dark Palette -->
-    <color name="bg_dark_start">#080C14</color>    <!-- Deep void black-blue -->
-    <color name="bg_dark_end">#121B2A</color>      <!-- Dark slate blue -->
+    <!-- Light Mode Background Palette -->
+    <color name="bg_dark_start">#F8FAFC</color>    <!-- Clean off-white background -->
+    <color name="bg_dark_center">#F1F5F9</color>
+    <color name="bg_dark_end">#E2E8F0</color>      <!-- Light slate grey -->
     
-    <!-- Glass/Glossy Overlay Colors (Semi-transparent whites & greys) -->
-    <color name="glass_card_bg">#1DFFFFFF</color>  <!-- 11% white overlay -->
-    <color name="glass_card_stroke">#33FFFFFF</color> <!-- 20% white border -->
-    <color name="glass_card_stroke_focused">#80FFFFFF</color> <!-- 50% white border -->
+    <!-- Light Glass/Card Overlay Colors -->
+    <color name="glass_card_bg">#FFFFFF</color>     <!-- Crisp white card background -->
+    <color name="glass_card_stroke">#CBD5E1</color> <!-- Light grey card border -->
+    <color name="glass_card_stroke_focused">#0284C7</color>
     
     <!-- Brand Accents -->
-    <color name="accent_blue">#00E5FF</color>       <!-- Electric cyan/blue -->
-    <color name="accent_blue_dark">#00838F</color>
-    <color name="accent_purple">#D500F9</color>     <!-- Neon purple -->
+    <color name="accent_blue">#0284C7</color>       <!-- Deep ocean blue for light mode -->
+    <color name="accent_blue_dark">#0369A1</color>
+    <color name="accent_purple">#7C3AED</color>     <!-- Royal purple -->
     
-    <!-- Base text colors (High contrast on dark) -->
-    <color name="text_primary">#E2E8F0</color>     <!-- Off-white -->
-    <color name="text_secondary">#94A3B8</color>   <!-- Cool grey -->
-    <color name="text_accent">#00E5FF</color>
+    <!-- Text colors for Light Mode -->
+    <color name="text_primary">#0F172A</color>     <!-- Deep navy / dark slate text -->
+    <color name="text_secondary">#64748B</color>   <!-- Muted grey-blue text -->
+    <color name="text_accent">#0284C7</color>
     
     <!-- Basic Defaults -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="error">#FF5252</color>     <!-- Neon/Alert red -->
+    <color name="error">#DC2626</color>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode Background Palette -->
+    <color name="bg_dark_start">#080C14</color>    <!-- Deep void black-blue -->
+    <color name="bg_dark_center">#0B1021</color>
+    <color name="bg_dark_end">#121B2A</color>      <!-- Dark slate blue -->
+    
+    <!-- Dark Glass Overlay Colors -->
+    <color name="glass_card_bg">#1DFFFFFF</color>  <!-- 11% white overlay -->
+    <color name="glass_card_stroke">#33FFFFFF</color> <!-- 20% white border -->
+    <color name="glass_card_stroke_focused">#80FFFFFF</color>
+    
+    <!-- Brand Accents -->
+    <color name="accent_blue">#00E5FF</color>       <!-- Electric cyan -->
+    <color name="accent_blue_dark">#00838F</color>
+    <color name="accent_purple">#D500F9</color>     <!-- Neon purple -->
+    
+    <!-- Text colors for Dark Mode -->
+    <color name="text_primary">#E2E8F0</color>     <!-- Off-white -->
+    <color name="text_secondary">#94A3B8</color>   <!-- Cool grey -->
+    <color name="text_accent">#00E5FF</color>
+    
+    <!-- Basic Defaults -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="error">#FF5252</color>
+</resources>

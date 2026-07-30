@@ -80,6 +80,8 @@ public class SettingsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
+    private com.google.android.material.materialswitch.MaterialSwitch switchDarkMode;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,6 +95,17 @@ public class SettingsFragment extends Fragment {
         edtPhone = view.findViewById(R.id.edtPhone);
         imgAvatar = view.findViewById(R.id.imgAvatar);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
+        switchDarkMode = view.findViewById(R.id.switchDarkMode);
+
+        // Initialize theme switch state
+        if (switchDarkMode != null && getContext() != null) {
+            boolean isDark = com.example.aimentor.utils.ThemeUtils.isDarkMode(getContext());
+            switchDarkMode.setChecked(isDark);
+            switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                com.example.aimentor.utils.ThemeUtils.setDarkMode(getContext(), isChecked);
+                Toast.makeText(getContext(), isChecked ? "Switched to Dark Mode 🌙" : "Switched to Light Mode ☀️", Toast.LENGTH_SHORT).show();
+            });
+        }
 
         // Load profile data
         loadUserProfile();

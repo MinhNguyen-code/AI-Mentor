@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     UserRepository userRepository;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_linear_layout_login);
         btnLogin = findViewById(R.id.btnSubmit); // tim phan tu ngoai giao dien

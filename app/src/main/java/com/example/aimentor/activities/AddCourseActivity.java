@@ -21,6 +21,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
 

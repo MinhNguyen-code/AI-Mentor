@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     UserRepository userRepository;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         edtUsername = findViewById(R.id.edtUsername);
