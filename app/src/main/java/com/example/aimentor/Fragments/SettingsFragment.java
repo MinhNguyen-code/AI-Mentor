@@ -35,7 +35,7 @@ import java.io.InputStream;
 public class SettingsFragment extends Fragment {
 
     private TextView tvDisplayUsername, tvDisplayRole, tvDisplayUserId, tvDisplayDateJoined;
-    private EditText edtEmail, edtPhone;
+    private EditText edtEmail, edtPhone, edtEduLevel, edtExplanationStyle;
     private ImageView imgAvatar;
     private Button btnSaveProfile;
     private UserRepository userRepository;
@@ -93,6 +93,8 @@ public class SettingsFragment extends Fragment {
         tvDisplayDateJoined = view.findViewById(R.id.tvDisplayDateJoined);
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPhone = view.findViewById(R.id.edtPhone);
+        edtEduLevel = view.findViewById(R.id.edtEduLevel);
+        edtExplanationStyle = view.findViewById(R.id.edtExplanationStyle);
         imgAvatar = view.findViewById(R.id.imgAvatar);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
@@ -161,6 +163,8 @@ public class SettingsFragment extends Fragment {
             // Fill inputs
             edtEmail.setText(user.getEmail());
             edtPhone.setText(user.getPhone());
+            if (!TextUtils.isEmpty(user.getEducationLevel())) edtEduLevel.setText(user.getEducationLevel());
+            if (!TextUtils.isEmpty(user.getExplanationStyle())) edtExplanationStyle.setText(user.getExplanationStyle());
 
             // Load avatar image
             loadAvatarImage(user.getAvatar());
@@ -270,6 +274,8 @@ public class SettingsFragment extends Fragment {
     private void saveUserProfile() {
         String email = edtEmail.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
+        String eduLevel = edtEduLevel.getText().toString().trim();
+        String explanationStyle = edtExplanationStyle.getText().toString().trim();
 
         // Inputs Validation
         if (TextUtils.isEmpty(email)) {
@@ -285,9 +291,11 @@ public class SettingsFragment extends Fragment {
             return;
         }
 
-        long result = userRepository.updateUserProfile(userId, email, phone);
-        if (result > 0) {
-            Toast.makeText(getContext(), "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+        long result1 = userRepository.updateUserProfile(userId, email, phone);
+        long result2 = userRepository.updateUserPreferences(userId, eduLevel, explanationStyle, "Programming, Databases");
+
+        if (result1 > 0 || result2 > 0) {
+            Toast.makeText(getContext(), "Profile & AI preferences saved successfully!", Toast.LENGTH_SHORT).show();
             
             // Sync with SharedPreferences
             if (sharedPreferences != null) {

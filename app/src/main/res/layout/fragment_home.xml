@@ -249,7 +249,7 @@
                     android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <!-- Compact Academic Progress Card (Credits Only) -->
+            <!-- Compact Academic Progress & Learning Stats Card -->
             <LinearLayout
                 android:id="@+id/cardOverview"
                 android:layout_width="match_parent"
@@ -260,6 +260,67 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/bentoHeader"
                 app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Questions Asked"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tvQuestionsAsked"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 Questions"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Saved Answers"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tvSavedAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 Saved ⭐"
+                            android:textColor="@color/accent_purple"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/glass_card_stroke"
+                    android:layout_marginBottom="10dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -280,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:text="36 / 120 credits (30%)"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true" />

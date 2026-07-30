@@ -32,7 +32,7 @@ public class AiMentorService {
         void onError(String errorMessage);
     }
 
-    public static void sendMessageToAi(String selectedModel, List<ChatMessageModel> chatHistory, String newUserPrompt, AiResponseCallback callback) {
+    public static void sendMessageToAi(String selectedModel, String educationLevel, String explanationStyle, List<ChatMessageModel> chatHistory, String newUserPrompt, AiResponseCallback callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -58,10 +58,18 @@ public class AiMentorService {
 
                     JSONArray messagesArray = new JSONArray();
 
-                    // 1. Add System Prompt
+                    // 1. Add System Prompt customized for student's level & style
+                    StringBuilder systemPromptBuilder = new StringBuilder(AiConfig.SYSTEM_PROMPT);
+                    if (educationLevel != null && !educationLevel.trim().isEmpty()) {
+                        systemPromptBuilder.append(" Target Student Level: ").append(educationLevel).append(".");
+                    }
+                    if (explanationStyle != null && !explanationStyle.trim().isEmpty()) {
+                        systemPromptBuilder.append(" Preferred Style: ").append(explanationStyle).append(".");
+                    }
+
                     JSONObject systemObj = new JSONObject();
                     systemObj.put("role", "system");
-                    systemObj.put("content", AiConfig.SYSTEM_PROMPT);
+                    systemObj.put("content", systemPromptBuilder.toString());
                     messagesArray.put(systemObj);
 
                     // 2. Add Recent Chat History (up to 10 previous messages for context)

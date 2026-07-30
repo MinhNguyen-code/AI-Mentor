@@ -5,10 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.example.aimentor.databases.SqliteDbHelper;
 import com.example.aimentor.models.UserModel;
@@ -25,7 +23,7 @@ public class UserRepository extends SqliteDbHelper {
     
     private String getCurrentDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        return sdf.format(new Date()); // lay ra duoc ngay thang hien tai va gio phut giay
+        return sdf.format(new Date());
     }
 
     public long saveUserAccount(String username, String password, String email, String phone){
@@ -36,31 +34,36 @@ public class UserRepository extends SqliteDbHelper {
         values.put(EMAIL_USER, email);
         values.put(PHONE_USER, phone);
         values.put(ROLE_USER, 1);
+        values.put(EDU_LEVEL_USER, "University");
+        values.put(EXPLANATION_STYLE_USER, "Step-by-Step");
+        values.put(SUBJECTS_USER, "Programming, Databases");
         values.put(CREATED_AT, currentDate);
         SQLiteDatabase db = this.getWritableDatabase();
         long insert = db.insert(TABLE_USERS, null, values);
         db.close();
-        return  insert;
+        return insert;
     }
 
     @SuppressLint("Range")
     public UserModel loginUser(String username, String password){
-        UserModel user = new UserModel();
-        // tao 1 mot mang chua thong tin du lieu cua tai khoan
-        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER};
-        // Select id, username, email, phone, role from Users where username = ? and password = ?
+        UserModel user = null;
+        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER};
         String condition = USERNAME_USER + " =? AND " + PASSWORD_USER + " =? ";
         String[] params = { username, PasswordUtils.hashPassword(password) };
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.query(TABLE_USERS, cols, condition, params, null, null, null);
         if (data.getCount() > 0){
             data.moveToFirst();
+            user = new UserModel();
             user.setId(data.getInt(data.getColumnIndex(ID_USER)));
             user.setUsername(data.getString(data.getColumnIndex(USERNAME_USER)));
             user.setEmail(data.getString(data.getColumnIndex(EMAIL_USER)));
             user.setPhone(data.getString(data.getColumnIndex(PHONE_USER)));
             user.setRole(data.getInt(data.getColumnIndex(ROLE_USER)));
             user.setAvatar(data.getString(data.getColumnIndex(AVATAR_USER)));
+            user.setEducationLevel(data.getString(data.getColumnIndex(EDU_LEVEL_USER)));
+            user.setExplanationStyle(data.getString(data.getColumnIndex(EXPLANATION_STYLE_USER)));
+            user.setSubjects(data.getString(data.getColumnIndex(SUBJECTS_USER)));
         }
         data.close();
         db.close();
@@ -70,7 +73,7 @@ public class UserRepository extends SqliteDbHelper {
     @SuppressLint("Range")
     public UserModel getUserById(int id){
         UserModel user = null;
-        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, CREATED_AT};
+        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER, CREATED_AT};
         String condition = ID_USER + " =? ";
         String[] params = { String.valueOf(id) };
         SQLiteDatabase db = this.getReadableDatabase();
@@ -84,6 +87,9 @@ public class UserRepository extends SqliteDbHelper {
             user.setPhone(data.getString(data.getColumnIndex(PHONE_USER)));
             user.setRole(data.getInt(data.getColumnIndex(ROLE_USER)));
             user.setAvatar(data.getString(data.getColumnIndex(AVATAR_USER)));
+            user.setEducationLevel(data.getString(data.getColumnIndex(EDU_LEVEL_USER)));
+            user.setExplanationStyle(data.getString(data.getColumnIndex(EXPLANATION_STYLE_USER)));
+            user.setSubjects(data.getString(data.getColumnIndex(SUBJECTS_USER)));
             user.setCreatedAt(data.getString(data.getColumnIndex(CREATED_AT)));
         }
         data.close();
@@ -96,10 +102,22 @@ public class UserRepository extends SqliteDbHelper {
         ContentValues values = new ContentValues();
         values.put(EMAIL_USER, email);
         values.put(PHONE_USER, phone);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            values.put(UPDATED_AT, getCurrentDate());
-        }
-        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{String.valueOf(id)});
+        values.put(UPDATED_AT, getCurrentDate());
+
+        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{ String.valueOf(id) });
+        db.close();
+        return result;
+    }
+
+    public long updateUserPreferences(int id, String educationLevel, String explanationStyle, String subjects){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(EDU_LEVEL_USER, educationLevel);
+        values.put(EXPLANATION_STYLE_USER, explanationStyle);
+        values.put(SUBJECTS_USER, subjects);
+        values.put(UPDATED_AT, getCurrentDate());
+
+        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{ String.valueOf(id) });
         db.close();
         return result;
     }
@@ -108,10 +126,9 @@ public class UserRepository extends SqliteDbHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(AVATAR_USER, avatarPath);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            values.put(UPDATED_AT, getCurrentDate());
-        }
-        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{String.valueOf(id)});
+        values.put(UPDATED_AT, getCurrentDate());
+
+        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{ String.valueOf(id) });
         db.close();
         return result;
     }

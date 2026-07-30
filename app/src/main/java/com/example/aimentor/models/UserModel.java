@@ -1,7 +1,6 @@
 package com.example.aimentor.models;
 
 public class UserModel {
-    // anh xa cac bang du lieu trong database
     private int id;
     private String username;
     private String password;
@@ -9,21 +8,11 @@ public class UserModel {
     private String phone;
     private int role;
     private String avatar;
+    private String educationLevel;
+    private String explanationStyle;
+    private String subjects;
     private String createdAt;
     private String updatedAt;
-
-    /*
-    public UserModel(int id, String username, String password, String email, String phone, int role, String createdAt, String updatedAt) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-     */
 
     public int getId() {
         return id;
@@ -73,6 +62,38 @@ public class UserModel {
         this.role = role;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getEducationLevel() {
+        return educationLevel;
+    }
+
+    public void setEducationLevel(String educationLevel) {
+        this.educationLevel = educationLevel;
+    }
+
+    public String getExplanationStyle() {
+        return explanationStyle;
+    }
+
+    public void setExplanationStyle(String explanationStyle) {
+        this.explanationStyle = explanationStyle;
+    }
+
+    public String getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(String subjects) {
+        this.subjects = subjects;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -87,13 +108,5 @@ public class UserModel {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 }

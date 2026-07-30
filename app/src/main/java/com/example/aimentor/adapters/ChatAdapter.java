@@ -24,9 +24,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ChatMessageModel> chatList;
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private OnBookmarkClickListener bookmarkListener;
+
+    public interface OnBookmarkClickListener {
+        void onBookmarkClick(ChatMessageModel message, int position);
+    }
 
     public ChatAdapter(List<ChatMessageModel> chatList) {
         this.chatList = chatList;
+    }
+
+    public void setOnBookmarkClickListener(OnBookmarkClickListener listener) {
+        this.bookmarkListener = listener;
     }
 
     @Override
@@ -60,10 +69,20 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (chatMessage.isTyping()) {
                 aiHolder.layoutTyping.setVisibility(View.VISIBLE);
                 aiHolder.tvAiMessage.setVisibility(View.GONE);
+                if (aiHolder.btnBookmark != null) aiHolder.btnBookmark.setVisibility(View.GONE);
             } else {
                 aiHolder.layoutTyping.setVisibility(View.GONE);
                 aiHolder.tvAiMessage.setVisibility(View.VISIBLE);
                 aiHolder.tvAiMessage.setText(chatMessage.getMessage());
+                if (aiHolder.btnBookmark != null) {
+                    aiHolder.btnBookmark.setVisibility(View.VISIBLE);
+                    aiHolder.btnBookmark.setText(chatMessage.isBookmarked() ? "⭐ Saved" : "⭐ Save");
+                    aiHolder.btnBookmark.setOnClickListener(v -> {
+                        if (bookmarkListener != null) {
+                            bookmarkListener.onBookmarkClick(chatMessage, holder.getAdapterPosition());
+                        }
+                    });
+                }
             }
             aiHolder.tvAiTime.setText(formattedTime);
         }
@@ -85,13 +104,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class AiViewHolder extends RecyclerView.ViewHolder {
-        TextView tvAiMessage, tvAiTime;
+        TextView tvAiMessage, tvAiTime, btnBookmark;
         LinearLayout layoutTyping;
 
         public AiViewHolder(@NonNull View itemView) {
             super(itemView);
             tvAiMessage = itemView.findViewById(R.id.tvAiMessage);
             tvAiTime = itemView.findViewById(R.id.tvAiTime);
+            btnBookmark = itemView.findViewById(R.id.btnBookmark);
             layoutTyping = itemView.findViewById(R.id.layoutTyping);
         }
     }

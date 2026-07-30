@@ -23,16 +23,17 @@ import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
-    private TextView tvGreeting, tvStudentMeta, tvAiRecommendation;
+    private TextView tvGreeting, tvStudentMeta, tvAiRecommendation, tvQuestionsAsked, tvSavedAnswers;
     private TextView chipPrompt1, chipPrompt2, chipPrompt3;
     private View btnAskAi;
     private LinearLayout btnActionRegistration, btnActionGrades, btnActionSchedule, btnActionProfile;
     private UserRepository userRepository;
+    private com.example.aimentor.repository.ChatRepository chatRepository;
     private int userId;
 
     private final String[] aiTips = {
             "\"Great progress! Based on your schedule, review Unit SD201 Programming today to prepare for upcoming assignments.\"",
-            "\"AI Recommendation: Focus on Database Normalization in DB201 to boost your GPA to 4.0!\"",
+            "\"AI Recommendation: Focus on Database Normalization in DB201 for your upcoming coursework.\"",
             "\"AI Learning Tip: Practice network subnetting algorithms in NW101 before your next lab session.\"",
             "\"Awesome work! You've completed 36/120 credits. Check out new Level 5 courses in the Courses tab!\""
     };
@@ -49,6 +50,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userRepository = new UserRepository(getContext());
+        chatRepository = new com.example.aimentor.repository.ChatRepository(getContext());
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
             userId = sharedPreferences.getInt("ID_USER", -1);
@@ -70,6 +72,8 @@ public class HomeFragment extends Fragment {
         tvGreeting = view.findViewById(R.id.tvGreeting);
         tvStudentMeta = view.findViewById(R.id.tvStudentMeta);
         tvAiRecommendation = view.findViewById(R.id.tvAiRecommendation);
+        tvQuestionsAsked = view.findViewById(R.id.tvQuestionsAsked);
+        tvSavedAnswers = view.findViewById(R.id.tvSavedAnswers);
         btnAskAi = view.findViewById(R.id.btnAskAi);
         chipPrompt1 = view.findViewById(R.id.chipPrompt1);
         chipPrompt2 = view.findViewById(R.id.chipPrompt2);
@@ -104,13 +108,21 @@ public class HomeFragment extends Fragment {
             } else if (user.getRole() == 2) {
                 tvStudentMeta.setText("Role: Faculty Profile");
             } else {
-                // Generate a formatted student registration code
                 String studentCode = "BTEC" + String.format("%05d", user.getId());
-                tvStudentMeta.setText("Student ID: " + studentCode + "  |  Major: IT");
+                String eduLevel = (user.getEducationLevel() != null) ? user.getEducationLevel() : "University";
+                tvStudentMeta.setText("Student ID: " + studentCode + "  |  " + eduLevel);
             }
         } else {
             tvGreeting.setText("Welcome back!");
             tvStudentMeta.setText("Error loading profile metadata.");
+        }
+
+        // Real-time Chat & Bookmark Statistics
+        if (chatRepository != null && userId != -1) {
+            int questionCount = chatRepository.getQuestionCount(userId);
+            int bookmarkCount = chatRepository.getBookmarkCount(userId);
+            if (tvQuestionsAsked != null) tvQuestionsAsked.setText(questionCount + " Asked");
+            if (tvSavedAnswers != null) tvSavedAnswers.setText(bookmarkCount + " Saved ⭐");
         }
     }
 

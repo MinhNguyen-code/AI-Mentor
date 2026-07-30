@@ -1,6 +1,9 @@
 package com.example.aimentor.Fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aimentor.R;
 import com.example.aimentor.adapters.ChatAdapter;
 import com.example.aimentor.models.ChatMessageModel;
+import com.example.aimentor.models.UserModel;
+import com.example.aimentor.repository.ChatRepository;
+import com.example.aimentor.repository.UserRepository;
 import com.example.aimentor.services.AiMentorService;
 import com.example.aimentor.utils.AiConfig;
 
@@ -33,14 +41,31 @@ public class QuizFragment extends Fragment {
     private EditText edtChatMessage;
     private View btnSendMessage, btnSelectModel;
     private ImageView btnClearChat;
-    private TextView tvSelectedModel;
+    private TextView tvSelectedModel, btnAttachImage;
     private TextView chipChat1, chipChat2, chipChat3, chipChat4, chipChat5;
 
     private static final List<ChatMessageModel> chatList = new ArrayList<>();
     private static String pendingPrompt = null;
 
     private ChatAdapter chatAdapter;
+    private ChatRepository chatRepository;
+    private UserRepository userRepository;
+    private int userId = -1;
     private boolean isAiThinking = false;
+    private Uri selectedImageUri = null;
+
+    private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    selectedImageUri = uri;
+                    Toast.makeText(getContext(), "📷 Homework photo attached! Ready to analyze.", Toast.LENGTH_SHORT).show();
+                    if (edtChatMessage != null && TextUtils.isEmpty(edtChatMessage.getText().toString())) {
+                        edtChatMessage.setText("📷 Please solve this attached homework diagram / equation.");
+                    }
+                }
+            }
+    );
 
     public QuizFragment() {
         // Required empty public constructor
@@ -55,9 +80,19 @@ public class QuizFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        chatRepository = new ChatRepository(getContext());
+        userRepository = new UserRepository(getContext());
+        if (getActivity() != null) {
+            SharedPreferences prefs = getActivity().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+            userId = prefs.getInt("ID_USER", -1);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_quiz, container, false);
     }
 
@@ -72,6 +107,7 @@ public class QuizFragment extends Fragment {
         btnClearChat = view.findViewById(R.id.btnClearChat);
         btnSelectModel = view.findViewById(R.id.btnSelectModel);
         tvSelectedModel = view.findViewById(R.id.tvSelectedModel);
+        btnAttachImage = view.findViewById(R.id.btnAttachImage);
 
         chipChat1 = view.findViewById(R.id.chipChat1);
         chipChat2 = view.findViewById(R.id.chipChat2);
@@ -81,28 +117,37 @@ public class QuizFragment extends Fragment {
 
         // Setup RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setStackFromEnd(true); // Keep scrolled to bottom
+        layoutManager.setStackFromEnd(true);
         rvChatMessages.setLayoutManager(layoutManager);
 
         chatAdapter = new ChatAdapter(chatList);
         rvChatMessages.setAdapter(chatAdapter);
 
+        // Bookmark listener
+        chatAdapter.setOnBookmarkClickListener((msg, position) -> {
+            boolean newBookmarkState = !msg.isBookmarked();
+            msg.setBookmarked(newBookmarkState);
+            if (msg.getId() > 0) {
+                chatRepository.toggleBookmark(msg.getId(), newBookmarkState);
+            }
+            chatAdapter.notifyItemChanged(position);
+            Toast.makeText(getContext(), newBookmarkState ? "⭐ Answer saved to Personal Library" : "Removed from Library", Toast.LENGTH_SHORT).show();
+        });
+
         // Initialize Selected Model UI
         updateModelSelectorUi();
 
-        // Setup Model Selection Click Listener
         if (btnSelectModel != null) {
             btnSelectModel.setOnClickListener(v -> showModelSelectionDialog());
         }
 
-        // Add Initial AI Welcome Message if empty
-        if (chatList.isEmpty()) {
-            chatList.add(new ChatMessageModel(
-                    "Hello! I am your BTEC AI Mentor 🤖.\n\nI'm ready to assist you with Programming (Java/C#), Database SQL, Web Development, Networking, Security, or any BTEC course questions!\n\n💡 Tip: You can switch AI models at the top to save tokens/credits (e.g. Llama 3.1 8B) or boost intelligence (Llama 3.3 70B).\n\nWhat would you like to explore today?",
-                    false
-            ));
-            chatAdapter.notifyItemInserted(chatList.size() - 1);
+        // Image Attachment listener
+        if (btnAttachImage != null) {
+            btnAttachImage.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
         }
+
+        // Load Persistent Chat History from SQLite
+        loadPersistentChatHistory();
 
         // Setup Send Button Listener
         btnSendMessage.setOnClickListener(v -> {
@@ -114,6 +159,9 @@ public class QuizFragment extends Fragment {
 
         // Setup Clear Chat Listener
         btnClearChat.setOnClickListener(v -> {
+            if (userId != -1) {
+                chatRepository.clearChatHistory(userId);
+            }
             chatList.clear();
             chatList.add(new ChatMessageModel(
                     "Chat history cleared! 🤖 Ask me any question to start a fresh discussion.",
@@ -129,8 +177,29 @@ public class QuizFragment extends Fragment {
         // Check if there is a pending prompt from HomeFragment
         if (pendingPrompt != null && !pendingPrompt.trim().isEmpty()) {
             String promptToSend = pendingPrompt;
-            pendingPrompt = null; // Reset
+            pendingPrompt = null;
             sendUserMessage(promptToSend);
+        }
+    }
+
+    private void loadPersistentChatHistory() {
+        if (userId != -1) {
+            List<ChatMessageModel> savedHistory = chatRepository.getChatHistory(userId);
+            if (savedHistory != null && !savedHistory.isEmpty()) {
+                chatList.clear();
+                chatList.addAll(savedHistory);
+                chatAdapter.notifyDataSetChanged();
+                rvChatMessages.scrollToPosition(chatList.size() - 1);
+                return;
+            }
+        }
+
+        if (chatList.isEmpty()) {
+            chatList.add(new ChatMessageModel(
+                    "Hello! I am your BTEC AI Mentor 🤖.\n\nI am connected and ready to assist you with Programming (Java/C#), Database SQL, Web Development, Networking, Security, or any homework questions!\n\n💡 Tip: You can attach homework photos 📷, switch AI models, or bookmark ⭐ key answers.\n\nWhat would you like to explore today?",
+                    false
+            ));
+            chatAdapter.notifyItemInserted(chatList.size() - 1);
         }
     }
 
@@ -156,15 +225,12 @@ public class QuizFragment extends Fragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor);
         builder.setTitle("Select AI Model (Token Efficiency)");
-        builder.setSingleChoiceItems(AiConfig.MODEL_DISPLAY_NAMES, checkedItem, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String selectedId = AiConfig.MODEL_IDS[which];
-                AiConfig.setSelectedModel(getContext(), selectedId);
-                updateModelSelectorUi();
-                Toast.makeText(getContext(), "Switched AI Model: " + AiConfig.MODEL_DISPLAY_NAMES[which], Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
+        builder.setSingleChoiceItems(AiConfig.MODEL_DISPLAY_NAMES, checkedItem, (dialog, which) -> {
+            String selectedId = AiConfig.MODEL_IDS[which];
+            AiConfig.setSelectedModel(getContext(), selectedId);
+            updateModelSelectorUi();
+            Toast.makeText(getContext(), "Switched AI Model: " + AiConfig.MODEL_DISPLAY_NAMES[which], Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
         builder.setNegativeButton("Cancel", null);
         builder.show();
@@ -184,7 +250,7 @@ public class QuizFragment extends Fragment {
             chipChat4.setOnClickListener(v -> sendUserMessage("What are the fundamentals of Network Security, Firewalls, and Encryption?"));
         }
         if (chipChat5 != null) {
-            chipChat5.setOnClickListener(v -> sendUserMessage("Quiz me! Give me 3 multiple choice questions on Java Programming (SD201)."));
+            chipChat5.setOnClickListener(v -> sendUserMessage("Quiz me! Give me 3 multiple choice questions on Java Programming (SD201) with answers and explanations."));
         }
     }
 
@@ -194,8 +260,33 @@ public class QuizFragment extends Fragment {
             return;
         }
 
-        // 1. Add User Message to Chat List
-        ChatMessageModel userMessage = new ChatMessageModel(userPrompt, true);
+        String finalPrompt = userPrompt;
+        if (selectedImageUri != null) {
+            finalPrompt = "[📷 Homework Image Attached: " + selectedImageUri.getLastPathSegment() + "]\n" + userPrompt;
+            selectedImageUri = null; // reset attachment after sending
+        }
+
+        // Get currently selected AI model and student preferences
+        String selectedModel = AiConfig.getSelectedModel(getContext());
+        String eduLevel = "University";
+        String explanationStyle = "Step-by-Step";
+
+        if (userId != -1) {
+            UserModel user = userRepository.getUserById(userId);
+            if (user != null) {
+                if (!TextUtils.isEmpty(user.getEducationLevel())) eduLevel = user.getEducationLevel();
+                if (!TextUtils.isEmpty(user.getExplanationStyle())) explanationStyle = user.getExplanationStyle();
+            }
+        }
+
+        // 1. Add & Save User Message
+        ChatMessageModel userMessage = new ChatMessageModel(finalPrompt, true);
+        userMessage.setUserId(userId);
+        userMessage.setModelUsed(selectedModel);
+        if (userId != -1) {
+            long insertedId = chatRepository.insertChatMessage(userId, finalPrompt, true, selectedModel);
+            userMessage.setId(insertedId);
+        }
         chatList.add(userMessage);
         int userPos = chatList.size() - 1;
         chatAdapter.notifyItemInserted(userPos);
@@ -215,11 +306,8 @@ public class QuizFragment extends Fragment {
 
         isAiThinking = true;
 
-        // Get currently selected AI model
-        String selectedModel = AiConfig.getSelectedModel(getContext());
-
         // 4. Call Groq AI API Service
-        AiMentorService.sendMessageToAi(selectedModel, chatList, userPrompt, new AiMentorService.AiResponseCallback() {
+        AiMentorService.sendMessageToAi(selectedModel, eduLevel, explanationStyle, chatList, finalPrompt, new AiMentorService.AiResponseCallback() {
             @Override
             public void onSuccess(String aiReply) {
                 isAiThinking = false;
@@ -228,8 +316,15 @@ public class QuizFragment extends Fragment {
                     chatList.remove(chatList.size() - 1);
                 }
 
-                // Add AI Reply
+                // Add & Save AI Reply
                 ChatMessageModel aiMessage = new ChatMessageModel(aiReply, false);
+                aiMessage.setUserId(userId);
+                aiMessage.setModelUsed(selectedModel);
+                if (userId != -1) {
+                    long insertedId = chatRepository.insertChatMessage(userId, aiReply, false, selectedModel);
+                    aiMessage.setId(insertedId);
+                }
+
                 chatList.add(aiMessage);
                 chatAdapter.notifyDataSetChanged();
                 rvChatMessages.scrollToPosition(chatList.size() - 1);

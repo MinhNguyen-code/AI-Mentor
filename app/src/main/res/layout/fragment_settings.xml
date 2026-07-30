@@ -213,6 +213,52 @@
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Education Level Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEduLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Education Level (Middle / High School / University)"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtEduLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="text"
+                        android:text="University"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Explanation Style Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilExplanationStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="AI Explanation Style (Step-by-Step / Short / Detailed)"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtExplanationStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="text"
+                        android:text="Step-by-Step"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Save Changes Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSaveProfile"
