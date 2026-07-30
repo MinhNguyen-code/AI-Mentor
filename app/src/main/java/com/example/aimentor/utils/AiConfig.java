@@ -10,7 +10,7 @@ public class AiConfig {
     // Groq OpenAI-compatible Endpoint
     public static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-    // AI Model Constants (Ordered from Low Token Usage to High Intelligence)
+    // AI Model Constants
     public static final String MODEL_LLAMA_8B = "llama-3.1-8b-instant";
     public static final String MODEL_LLAMA_70B = "llama-3.3-70b-versatile";
     public static final String MODEL_GPT_OSS = "openai/gpt-oss-20b";
@@ -23,11 +23,25 @@ public class AiConfig {
             MODEL_COMPOUND_MINI
     };
 
+    public static final String[] MODEL_SHORT_NAMES = {
+            "Llama 3.1 8B",
+            "Llama 3.3 70B",
+            "GPT-OSS 20B",
+            "Compound Mini"
+    };
+
+    public static final String[] MODEL_BADGES = {
+            "Fast",
+            "High",
+            "Balanced",
+            "Light"
+    };
+
     public static final String[] MODEL_DISPLAY_NAMES = {
-            "⚡ Llama 3.1 8B (Economical / Fast)",
-            "🧠 Llama 3.3 70B (High Intelligence)",
-            "🚀 GPT-OSS 20B (Balanced Performance)",
-            "🌱 Compound Mini (Ultra Light)"
+            "Llama 3.1 8B  (Fast)",
+            "Llama 3.3 70B  (High)",
+            "GPT-OSS 20B  (Balanced)",
+            "Compound Mini  (Light)"
     };
 
     private static final String PREF_NAME = "AI_MENTOR_PREFS";
@@ -45,7 +59,6 @@ public class AiConfig {
         if (BuildConfig.GROQ_API_KEY != null && !BuildConfig.GROQ_API_KEY.trim().isEmpty()) {
             return BuildConfig.GROQ_API_KEY.trim();
         }
-        // Fallback dynamic string assembly if local.properties is missing
         return "gsk_6JB12SfQ" + "ff4PtJQ8bRLp" + "WGdyb3FYtlnB" + "v1hVaa6C1rBx" + "q3eTFU8j";
     }
 
@@ -64,9 +77,9 @@ public class AiConfig {
     public static String getModelDisplayName(String modelId) {
         for (int i = 0; i < MODEL_IDS.length; i++) {
             if (MODEL_IDS[i].equals(modelId)) {
-                return MODEL_DISPLAY_NAMES[i];
+                return MODEL_SHORT_NAMES[i] + " (" + MODEL_BADGES[i] + ")";
             }
         }
-        return "⚡ Llama 3.1 8B (Economical / Fast)";
+        return "Llama 3.1 8B (Fast)";
     }
 }

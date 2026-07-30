@@ -220,25 +220,48 @@ public class QuizFragment extends Fragment {
         if (getContext() == null) return;
 
         String currentModelId = AiConfig.getSelectedModel(getContext());
-        int checkedItem = 0;
+
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_model_selector_compact, null);
+        LinearLayout containerModels = dialogView.findViewById(R.id.containerModels);
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor)
+                .setView(dialogView)
+                .create();
+
         for (int i = 0; i < AiConfig.MODEL_IDS.length; i++) {
-            if (AiConfig.MODEL_IDS[i].equals(currentModelId)) {
-                checkedItem = i;
-                break;
+            final String modelId = AiConfig.MODEL_IDS[i];
+            String name = AiConfig.MODEL_SHORT_NAMES[i];
+            String badge = AiConfig.MODEL_BADGES[i];
+
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_model_compact, containerModels, false);
+            TextView tvModelName = itemView.findViewById(R.id.tvModelName);
+            TextView tvModelBadge = itemView.findViewById(R.id.tvModelBadge);
+            TextView tvCheckmark = itemView.findViewById(R.id.tvCheckmark);
+
+            tvModelName.setText(name);
+            tvModelBadge.setText(badge + " ⓘ");
+
+            if (modelId.equals(currentModelId)) {
+                tvCheckmark.setVisibility(View.VISIBLE);
+                tvModelName.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), R.color.accent_blue));
+                tvModelBadge.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), R.color.accent_blue));
+            } else {
+                tvCheckmark.setVisibility(View.GONE);
+                tvModelName.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), R.color.text_primary));
+                tvModelBadge.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), R.color.text_secondary));
             }
+
+            itemView.setOnClickListener(v -> {
+                AiConfig.setSelectedModel(getContext(), modelId);
+                updateModelSelectorUi();
+                Toast.makeText(getContext(), "Selected: " + name, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            });
+
+            containerModels.addView(itemView);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor);
-        builder.setTitle("Select AI Model (Token Efficiency)");
-        builder.setSingleChoiceItems(AiConfig.MODEL_DISPLAY_NAMES, checkedItem, (dialog, which) -> {
-            String selectedId = AiConfig.MODEL_IDS[which];
-            AiConfig.setSelectedModel(getContext(), selectedId);
-            updateModelSelectorUi();
-            Toast.makeText(getContext(), "Switched AI Model: " + AiConfig.MODEL_DISPLAY_NAMES[which], Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
+        dialog.show();
     }
 
     private void setupChipListeners() {
