@@ -81,6 +81,20 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- History List Button (Gần đây) -->
+        <TextView
+            android:id="@+id/btnShowHistory"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:text="🕒"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="Recent Chat History List" />
+
         <!-- Clear Chat Button -->
         <ImageView
             android:id="@+id/btnClearChat"

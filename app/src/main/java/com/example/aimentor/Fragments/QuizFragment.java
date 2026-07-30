@@ -96,6 +96,8 @@ public class QuizFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_quiz, container, false);
     }
 
+    private TextView tvSelectedModel, btnAttachImage, btnShowHistory;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -108,6 +110,7 @@ public class QuizFragment extends Fragment {
         btnSelectModel = view.findViewById(R.id.btnSelectModel);
         tvSelectedModel = view.findViewById(R.id.tvSelectedModel);
         btnAttachImage = view.findViewById(R.id.btnAttachImage);
+        btnShowHistory = view.findViewById(R.id.btnShowHistory);
 
         chipChat1 = view.findViewById(R.id.chipChat1);
         chipChat2 = view.findViewById(R.id.chipChat2);
@@ -144,6 +147,11 @@ public class QuizFragment extends Fragment {
         // Image Attachment listener
         if (btnAttachImage != null) {
             btnAttachImage.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+        }
+
+        // Recent History Sidebar List listener (Gần đây)
+        if (btnShowHistory != null) {
+            btnShowHistory.setOnClickListener(v -> showChatHistoryDialog());
         }
 
         // Load Persistent Chat History from SQLite
@@ -347,5 +355,81 @@ public class QuizFragment extends Fragment {
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showChatHistoryDialog() {
+        if (getContext() == null || userId == -1) return;
+
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_chat_history, null);
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor)
+                .setView(dialogView)
+                .create();
+
+        RecyclerView rvHistoryList = dialogView.findViewById(R.id.rvHistoryList);
+        EditText edtSearchHistory = dialogView.findViewById(R.id.edtSearchHistory);
+        TextView tvEmptyHistory = dialogView.findViewById(R.id.tvEmptyHistory);
+        TextView btnCloseHistory = dialogView.findViewById(R.id.btnCloseHistory);
+
+        rvHistoryList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        List<ChatMessageModel> allHistory = chatRepository.getChatHistory(userId);
+        List<ChatMessageModel> filteredList = new ArrayList<>();
+        if (allHistory != null) {
+            filteredList.addAll(allHistory);
+        }
+
+        if (filteredList.isEmpty()) {
+            tvEmptyHistory.setVisibility(View.VISIBLE);
+            rvHistoryList.setVisibility(View.GONE);
+        } else {
+            tvEmptyHistory.setVisibility(View.GONE);
+            rvHistoryList.setVisibility(View.VISIBLE);
+        }
+
+        com.example.aimentor.adapters.ChatHistoryAdapter historyAdapter =
+                new com.example.aimentor.adapters.ChatHistoryAdapter(filteredList);
+
+        historyAdapter.setOnHistoryItemClickListener(selectedItem -> {
+            dialog.dismiss();
+            for (int i = 0; i < chatList.size(); i++) {
+                ChatMessageModel msg = chatList.get(i);
+                if (msg.getId() > 0 && msg.getId() == selectedItem.getId()) {
+                    rvChatMessages.scrollToPosition(i);
+                    Toast.makeText(getContext(), "Jumped to selected chat 💬", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
+
+        rvHistoryList.setAdapter(historyAdapter);
+
+        // Real-time search filter
+        edtSearchHistory.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim();
+                List<ChatMessageModel> searchResults = chatRepository.searchChatHistory(userId, query);
+                filteredList.clear();
+                if (searchResults != null) filteredList.addAll(searchResults);
+                historyAdapter.notifyDataSetChanged();
+
+                if (filteredList.isEmpty()) {
+                    tvEmptyHistory.setVisibility(View.VISIBLE);
+                    rvHistoryList.setVisibility(View.GONE);
+                } else {
+                    tvEmptyHistory.setVisibility(View.GONE);
+                    rvHistoryList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        btnCloseHistory.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 }
