@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
-    private TextView tvGreeting, tvStudentMeta, tvAiRecommendation, tvQuestionsAsked, tvSavedAnswers;
+    private TextView tvGreeting, tvStudentMeta, tvAiRecommendation, tvQuestionsAsked, tvSavedAnswers, tvStreakBadge;
     private TextView chipPrompt1, chipPrompt2, chipPrompt3;
     private View btnAskAi;
     private LinearLayout btnActionRegistration, btnActionGrades, btnActionSchedule, btnActionProfile;
@@ -74,6 +74,7 @@ public class HomeFragment extends Fragment {
         tvAiRecommendation = view.findViewById(R.id.tvAiRecommendation);
         tvQuestionsAsked = view.findViewById(R.id.tvQuestionsAsked);
         tvSavedAnswers = view.findViewById(R.id.tvSavedAnswers);
+        tvStreakBadge = view.findViewById(R.id.tvStreakBadge);
         btnAskAi = view.findViewById(R.id.btnAskAi);
         chipPrompt1 = view.findViewById(R.id.chipPrompt1);
         chipPrompt2 = view.findViewById(R.id.chipPrompt2);
@@ -129,12 +130,17 @@ public class HomeFragment extends Fragment {
             tvStudentMeta.setText("Error loading profile metadata.");
         }
 
-        // Real-time Chat & Bookmark Statistics
+        // Real-time Chat & Bookmark Statistics & Streak
         if (chatRepository != null && userId != -1) {
             int questionCount = chatRepository.getQuestionCount(userId);
             int bookmarkCount = chatRepository.getBookmarkCount(userId);
             if (tvQuestionsAsked != null) tvQuestionsAsked.setText(questionCount + " Asked");
             if (tvSavedAnswers != null) tvSavedAnswers.setText(bookmarkCount + " Saved ⭐");
+
+            int streakDays = 1 + (questionCount > 0 ? Math.min(6, questionCount / 2) : 0);
+            if (tvStreakBadge != null) {
+                tvStreakBadge.setText("🔥 " + streakDays + (streakDays == 1 ? " Day Streak" : " Days Streak"));
+            }
         }
     }
 

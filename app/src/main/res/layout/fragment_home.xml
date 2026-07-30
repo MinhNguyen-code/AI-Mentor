@@ -64,9 +64,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvStreakBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔥 7 Days Streak"
+                        android:text="🔥 1 Day Streak"
                         android:textColor="#FF9100"
                         android:textSize="12sp"
                         android:textStyle="bold" />
