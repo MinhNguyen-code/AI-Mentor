@@ -64,8 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 // xu ly kiem tra xem tai khoan co ton tai trong co so du lieu hay ko?
                 UserModel user = userRepository.loginUser(username, password);
-                assert  user != null;
-                if (user.getId() > 0 && !TextUtils.isEmpty(user.getUsername())){
+                if (user != null && user.getId() > 0 && !TextUtils.isEmpty(user.getUsername())){
                     // dang nhap thanh cong
                     // luu thong tin tai khoan - de xu ly o nhung man hinh khac
                     SharedPreferences sharePf = getSharedPreferences("USER_INFO", MODE_PRIVATE);

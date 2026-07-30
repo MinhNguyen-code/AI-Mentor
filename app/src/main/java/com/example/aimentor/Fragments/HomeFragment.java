@@ -91,13 +91,25 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDashboardData() {
+        if (userRepository == null && getContext() != null) {
+            userRepository = new UserRepository(getContext());
+        }
+        if (chatRepository == null && getContext() != null) {
+            chatRepository = new com.example.aimentor.repository.ChatRepository(getContext());
+        }
+
+        if (userId == -1 && getActivity() != null) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+            userId = sharedPreferences.getInt("ID_USER", -1);
+        }
+
         if (userId == -1) {
-            tvGreeting.setText("Welcome back!");
-            tvStudentMeta.setText("Please log in to view academic records.");
+            if (tvGreeting != null) tvGreeting.setText("Welcome back!");
+            if (tvStudentMeta != null) tvStudentMeta.setText("Please log in to view academic records.");
             return;
         }
 
-        UserModel user = userRepository.getUserById(userId);
+        UserModel user = (userRepository != null) ? userRepository.getUserById(userId) : null;
         if (user != null) {
             // Set dynamic welcome greeting
             tvGreeting.setText("Welcome back, " + user.getUsername() + "!");

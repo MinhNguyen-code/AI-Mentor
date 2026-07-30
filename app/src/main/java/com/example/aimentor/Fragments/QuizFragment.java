@@ -189,7 +189,19 @@ public class QuizFragment extends Fragment {
     }
 
     private void loadPersistentChatHistory() {
-        if (userId != -1) {
+        if (chatRepository == null && getContext() != null) {
+            chatRepository = new ChatRepository(getContext());
+        }
+        if (userRepository == null && getContext() != null) {
+            userRepository = new UserRepository(getContext());
+        }
+
+        if (userId == -1 && getActivity() != null) {
+            SharedPreferences prefs = getActivity().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+            userId = prefs.getInt("ID_USER", -1);
+        }
+
+        if (userId != -1 && chatRepository != null) {
             List<ChatMessageModel> savedHistory = chatRepository.getChatHistory(userId);
             if (savedHistory != null && !savedHistory.isEmpty()) {
                 chatList.clear();
