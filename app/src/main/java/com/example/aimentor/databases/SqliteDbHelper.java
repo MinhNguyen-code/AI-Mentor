@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class SqliteDbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "studyAI";
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 8;
 
     // Define table "users" and its columns
     public static final String TABLE_USERS = "users";
@@ -95,14 +95,14 @@ public class SqliteDbHelper extends SQLiteOpenHelper {
 
     private void prePopulateUsers(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
-        values.put(USERNAME_USER, "student1");
-        values.put(PASSWORD_USER, com.example.aimentor.utils.PasswordUtils.hashPassword("Password123"));
-        values.put(EMAIL_USER, "student1@btec.edu.vn");
+        values.put(USERNAME_USER, "Urakan");
+        values.put(PASSWORD_USER, com.example.aimentor.utils.PasswordUtils.hashPassword("Mjn_1012"));
+        values.put(EMAIL_USER, "urakan@btec.edu.vn");
         values.put(PHONE_USER, "0988888888");
-        values.put(ROLE_USER, 1);
+        values.put(ROLE_USER, 3); // Role 3 = Full Administrator / Master Privileges
         values.put(EDU_LEVEL_USER, "University");
         values.put(EXPLANATION_STYLE_USER, "Step-by-Step");
-        values.put(SUBJECTS_USER, "Programming, Databases");
+        values.put(SUBJECTS_USER, "Programming, Databases, Networking, Security");
         db.insert(TABLE_USERS, null, values);
     }
 
