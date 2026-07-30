@@ -93,5 +93,19 @@
             android:maxLines="3"
             android:ellipsize="end"/>
 
+        <!-- Play AI Kahoot Quiz Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKahootQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="🎮 Play AI Kahoot Quiz"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            app:backgroundTint="@color/accent_purple"
+            app:cornerRadius="10dp"
+            app:rippleColor="@color/white" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

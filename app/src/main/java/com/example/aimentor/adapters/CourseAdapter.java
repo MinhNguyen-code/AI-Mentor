@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aimentor.R;
 import com.example.aimentor.models.CourseModel;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -18,14 +19,23 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     private List<CourseModel> coursesList;
     private OnCourseDeleteListener deleteListener;
+    private OnKahootQuizClickListener kahootListener;
 
     public interface OnCourseDeleteListener {
         void onCourseDelete(int courseId, int position);
     }
 
+    public interface OnKahootQuizClickListener {
+        void onKahootQuizClick(CourseModel course);
+    }
+
     public CourseAdapter(List<CourseModel> coursesList, OnCourseDeleteListener deleteListener) {
         this.coursesList = coursesList;
         this.deleteListener = deleteListener;
+    }
+
+    public void setOnKahootQuizClickListener(OnKahootQuizClickListener kahootListener) {
+        this.kahootListener = kahootListener;
     }
 
     @NonNull
@@ -44,14 +54,20 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.tvCourseDesc.setText(course.getDescription());
 
         // Handle delete action
-        holder.btnDeleteCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (deleteListener != null) {
-                    deleteListener.onCourseDelete(course.getId(), holder.getAdapterPosition());
-                }
+        holder.btnDeleteCourse.setOnClickListener(v -> {
+            if (deleteListener != null) {
+                deleteListener.onCourseDelete(course.getId(), holder.getAdapterPosition());
             }
         });
+
+        // Handle Kahoot Quiz Action
+        if (holder.btnKahootQuiz != null) {
+            holder.btnKahootQuiz.setOnClickListener(v -> {
+                if (kahootListener != null) {
+                    kahootListener.onKahootQuizClick(course);
+                }
+            });
+        }
     }
 
     @Override
@@ -70,6 +86,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView tvCourseCode, tvCourseCredits, tvCourseTitle, tvCourseDesc;
         ImageView btnDeleteCourse;
+        MaterialButton btnKahootQuiz;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +95,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             tvCourseTitle = itemView.findViewById(R.id.tvCourseTitle);
             tvCourseDesc = itemView.findViewById(R.id.tvCourseDesc);
             btnDeleteCourse = itemView.findViewById(R.id.btnDeleteCourse);
+            btnKahootQuiz = itemView.findViewById(R.id.btnKahootQuiz);
         }
     }
 }

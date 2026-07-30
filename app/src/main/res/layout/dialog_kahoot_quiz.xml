@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_glossy_glass"
+    android:padding="20dp">
+
+    <!-- Header bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tvKahootHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎮 KAHOOT AI QUIZ"
+            android:textColor="@color/accent_purple"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/tvKahootScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score: 0 Pts"
+            android:textColor="@color/accent_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <!-- Question Container -->
+    <LinearLayout
+        android:id="@+id/layoutQuestionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_chat_user"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/tvKahootProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question 1 / 3"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvKahootQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generating AI Kahoot Question..."
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <ProgressBar
+            android:id="@+id/progressKahootLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:indeterminateTint="@color/accent_purple" />
+    </LinearLayout>
+
+    <!-- 4 Colorful Kahoot Option Cards -->
+    <LinearLayout
+        android:id="@+id/layoutOptionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Option A - Red Card -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionA"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="▲ Option A"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="16dp"
+            app:backgroundTint="#E21B3C"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Option B - Blue Card -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionB"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="◆ Option B"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="16dp"
+            app:backgroundTint="#1368CE"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Option C - Yellow Card -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionC"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="● Option C"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="16dp"
+            app:backgroundTint="#D89E00"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Option D - Green Card -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionD"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="■ Option D"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="16dp"
+            app:backgroundTint="#26890C"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseKahoot"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Close Quiz"
+        android:textColor="@color/text_secondary"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

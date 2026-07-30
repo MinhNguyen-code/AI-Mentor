@@ -97,6 +97,33 @@ public class UserRepository extends SqliteDbHelper {
         return user;
     }
 
+    public boolean validatePassword(int id, String rawPassword) {
+        if (rawPassword == null) return false;
+        String hashedPassword = PasswordUtils.hashPassword(rawPassword);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{ID_USER},
+                ID_USER + " =? AND " + PASSWORD_USER + " =?",
+                new String[]{String.valueOf(id), hashedPassword},
+                null, null, null);
+        boolean isValid = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return isValid;
+    }
+
+    public long updateUserFullProfile(int id, String username, String email, String phone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME_USER, username);
+        values.put(EMAIL_USER, email);
+        values.put(PHONE_USER, phone);
+        values.put(UPDATED_AT, getCurrentDate());
+
+        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{String.valueOf(id)});
+        db.close();
+        return result;
+    }
+
     public long updateUserProfile(int id, String email, String phone){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

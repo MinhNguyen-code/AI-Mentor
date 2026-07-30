@@ -170,11 +170,33 @@
                     android:background="@color/glass_card_stroke"
                     android:layout_marginBottom="20dp"/>
 
+                <!-- Username Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="text"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Email Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:hint="Email Address"
                     app:hintTextColor="@color/accent_blue"
                     app:boxStrokeColor="@color/accent_blue"
@@ -213,49 +235,26 @@
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Education Level Input -->
+                <!-- Security Password Confirmation Input -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEduLevel"
+                    android:id="@+id/tilCurrentPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Education Level (Middle / High School / University)"
-                    app:hintTextColor="@color/accent_blue"
-                    app:boxStrokeColor="@color/accent_blue"
-                    app:startIconTint="@color/text_secondary"
+                    android:layout_marginTop="16dp"
+                    android:hint="Enter Password to Save Changes 🔒"
+                    app:hintTextColor="@color/accent_purple"
+                    app:boxStrokeColor="@color/accent_purple"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtEduLevel"
+                        android:id="@+id/edtCurrentPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:inputType="text"
-                        android:text="University"
-                        android:maxLines="1"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Explanation Style Input -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilExplanationStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="AI Explanation Style (Step-by-Step / Short / Detailed)"
-                    app:hintTextColor="@color/accent_blue"
-                    app:boxStrokeColor="@color/accent_blue"
-                    app:startIconTint="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtExplanationStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_primary"
-                        android:inputType="text"
-                        android:text="Step-by-Step"
+                        android:inputType="textPassword"
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

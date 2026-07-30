@@ -224,142 +224,7 @@
                     android:layout_marginTop="10dp" />
             </LinearLayout>
 
-            <!-- 3. BENTO GRID PROGRESS METRICS SECTION -->
-            <LinearLayout
-                android:id="@+id/bentoHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/cardAiPromptHero"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="16dp"
-                    android:background="@color/accent_blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Academic Progress"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
-
-            <!-- Compact Academic Progress & Learning Stats Card -->
-            <LinearLayout
-                android:id="@+id/cardOverview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/card_glossy_glass"
-                android:padding="16dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/bentoHeader"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Questions Asked"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tvQuestionsAsked"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 Questions"
-                            android:textColor="@color/accent_blue"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Saved Answers"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tvSavedAnswers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 Saved ⭐"
-                            android:textColor="@color/accent_purple"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/glass_card_stroke"
-                    android:layout_marginBottom="10dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Credits Completed"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true" />
-
-                    <TextView
-                        android:id="@+id/tvDisplayCredits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="36 / 120 credits (30%)"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true" />
-                </RelativeLayout>
-
-                <ProgressBar
-                    android:id="@+id/progressCredits"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="6dp"
-                    android:progress="30"
-                    android:progressTint="@color/accent_blue"
-                    android:progressBackgroundTint="@color/glass_card_stroke"
-                    android:layout_marginTop="10dp" />
-            </LinearLayout>
-
-            <!-- 4. QUICK ACTIONS GRID -->
+            <!-- 3. QUICK ACTIONS GRID -->
             <LinearLayout
                 android:id="@+id/actionsHeader"
                 android:layout_width="wrap_content"
@@ -367,7 +232,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/cardOverview"
+                app:layout_constraintTop_toBottomOf="@id/cardAiPromptHero"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <View
@@ -380,7 +245,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quick Actions"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp" />
@@ -393,12 +258,14 @@
                 android:rowCount="2"
                 android:columnCount="2"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 app:layout_constraintTop_toBottomOf="@id/actionsHeader"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-                <!-- Action 1: Course Reg -->
+                <!-- Action 1: Courses -->
                 <LinearLayout
                     android:id="@+id/btnActionRegistration"
                     android:layout_width="0dp"
@@ -437,7 +304,7 @@
                         android:layout_marginTop="10dp" />
                 </LinearLayout>
 
-                <!-- Action 2: Grades -->
+                <!-- Action 2: AI Chat & Kahoot -->
                 <LinearLayout
                     android:id="@+id/btnActionGrades"
                     android:layout_width="0dp"
@@ -463,13 +330,13 @@
                             android:layout_gravity="center"
                             android:src="@drawable/quiz_icon"
                             app:tint="@color/accent_purple"
-                            android:contentDescription="Grades Icon" />
+                            android:contentDescription="AI Chat Icon" />
                     </FrameLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quizzes &amp; Grades"
+                        android:text="AI Chat &amp; Quiz"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -547,131 +414,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Profile"
+                        android:text="Profile &amp; Settings"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp" />
                 </LinearLayout>
             </GridLayout>
-
-            <!-- 5. TODAY'S CLASSES -->
-            <LinearLayout
-                android:id="@+id/classesHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/gridActions"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="16dp"
-                    android:background="@color/accent_blue" />
-
-                <TextView
-                    android:id="@+id/tvClassesTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Today's Classes"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutClasses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintTop_toBottomOf="@id/classesHeader"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <!-- Class 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/card_glossy_glass"
-                    android:padding="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="40dp"
-                        android:background="@color/accent_blue" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SD201 - Programming (Java/C#)"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="08:00 AM - 10:00 AM  |  Room 201"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Class 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/card_glossy_glass"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="40dp"
-                        android:background="@color/accent_purple" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="DB201 - Database Design &amp; Development"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01:30 PM - 03:30 PM  |  Room 104"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

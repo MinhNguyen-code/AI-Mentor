@@ -219,7 +219,7 @@
         android:background="@drawable/card_glossy_glass"
         android:padding="8dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="?actionBarSize"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

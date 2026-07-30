@@ -35,14 +35,13 @@ import java.io.InputStream;
 public class SettingsFragment extends Fragment {
 
     private TextView tvDisplayUsername, tvDisplayRole, tvDisplayUserId, tvDisplayDateJoined;
-    private EditText edtEmail, edtPhone, edtEduLevel, edtExplanationStyle;
+    private EditText edtUsername, edtEmail, edtPhone, edtCurrentPassword;
     private ImageView imgAvatar;
     private Button btnSaveProfile;
     private UserRepository userRepository;
     private SharedPreferences sharedPreferences;
     private int userId;
 
-    // Register ActivityResultLauncher for gallery picking
     private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -56,7 +55,6 @@ public class SettingsFragment extends Fragment {
     );
 
     public SettingsFragment() {
-        // Required empty public constructor
     }
 
     public static SettingsFragment newInstance() {
@@ -76,7 +74,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
@@ -91,10 +88,10 @@ public class SettingsFragment extends Fragment {
         tvDisplayRole = view.findViewById(R.id.tvDisplayRole);
         tvDisplayUserId = view.findViewById(R.id.tvDisplayUserId);
         tvDisplayDateJoined = view.findViewById(R.id.tvDisplayDateJoined);
+        edtUsername = view.findViewById(R.id.edtUsername);
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPhone = view.findViewById(R.id.edtPhone);
-        edtEduLevel = view.findViewById(R.id.edtEduLevel);
-        edtExplanationStyle = view.findViewById(R.id.edtExplanationStyle);
+        edtCurrentPassword = view.findViewById(R.id.edtCurrentPassword);
         imgAvatar = view.findViewById(R.id.imgAvatar);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
@@ -109,24 +106,10 @@ public class SettingsFragment extends Fragment {
             });
         }
 
-        // Load profile data
         loadUserProfile();
 
-        // Handle avatar click to change picture
-        imgAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickImageLauncher.launch("image/*");
-            }
-        });
-
-        // Handle save action
-        btnSaveProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUserProfile();
-            }
-        });
+        imgAvatar.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+        btnSaveProfile.setOnClickListener(v -> saveUserProfile());
     }
 
     private void loadUserProfile() {
@@ -140,7 +123,6 @@ public class SettingsFragment extends Fragment {
             tvDisplayUsername.setText(user.getUsername());
             tvDisplayUserId.setText(String.valueOf(user.getId()));
             
-            // Format friendly role text
             String roleText = "ROLE: Student";
             if (user.getRole() == 3) {
                 roleText = "ROLE: Administrator";
@@ -149,7 +131,6 @@ public class SettingsFragment extends Fragment {
             }
             tvDisplayRole.setText(roleText);
 
-            // Display registration date
             if (!TextUtils.isEmpty(user.getCreatedAt())) {
                 String dateJoined = user.getCreatedAt();
                 if (dateJoined.length() > 10) {
@@ -160,16 +141,11 @@ public class SettingsFragment extends Fragment {
                 tvDisplayDateJoined.setText("N/A");
             }
 
-            // Fill inputs
+            edtUsername.setText(user.getUsername());
             edtEmail.setText(user.getEmail());
             edtPhone.setText(user.getPhone());
-            if (!TextUtils.isEmpty(user.getEducationLevel())) edtEduLevel.setText(user.getEducationLevel());
-            if (!TextUtils.isEmpty(user.getExplanationStyle())) edtExplanationStyle.setText(user.getExplanationStyle());
 
-            // Load avatar image
             loadAvatarImage(user.getAvatar());
-        } else {
-            Toast.makeText(getContext(), "Failed to load profile data.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -213,14 +189,12 @@ public class SettingsFragment extends Fragment {
             inputStream = getContext().getContentResolver().openInputStream(uri);
             if (inputStream == null) return;
 
-            // Decode image stream into a Bitmap
             originalBitmap = BitmapFactory.decodeStream(inputStream);
             if (originalBitmap == null) {
-                Toast.makeText(getContext(), "Failed to decode selected image.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to decode image.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Crop image programmatically to a 1:1 square ratio
             int width = originalBitmap.getWidth();
             int height = originalBitmap.getHeight();
             int size = Math.min(width, height);
@@ -228,7 +202,6 @@ public class SettingsFragment extends Fragment {
             int y = (height - size) / 2;
             croppedBitmap = Bitmap.createBitmap(originalBitmap, x, y, size, size);
 
-            // Create target file in internal storage /avatars
             File avatarDir = new File(getContext().getFilesDir(), "avatars");
             if (!avatarDir.exists()) {
                 avatarDir.mkdirs();
@@ -236,32 +209,20 @@ public class SettingsFragment extends Fragment {
 
             File avatarFile = new File(avatarDir, "avatar_user_" + userId + ".jpg");
             outputStream = new FileOutputStream(avatarFile);
-
-            // Compress cropped bitmap to JPEG and save it (85% quality to save space)
             croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream);
 
-            // Save new path in the database
             String avatarPath = avatarFile.getAbsolutePath();
             long result = userRepository.updateUserAvatar(userId, avatarPath);
             if (result > 0) {
-                // Refresh local view
                 loadAvatarImage(avatarPath);
                 Toast.makeText(getContext(), "Avatar updated successfully!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Failed to save avatar path to database.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "Error saving avatar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         } finally {
-            // Clean up resources and recycle bitmaps to free memory
-            if (originalBitmap != null && !originalBitmap.isRecycled()) {
-                originalBitmap.recycle();
-            }
-            if (croppedBitmap != null && !croppedBitmap.isRecycled()) {
-                croppedBitmap.recycle();
-            }
+            if (originalBitmap != null && !originalBitmap.isRecycled()) originalBitmap.recycle();
+            if (croppedBitmap != null && !croppedBitmap.isRecycled()) croppedBitmap.recycle();
             try {
                 if (inputStream != null) inputStream.close();
                 if (outputStream != null) outputStream.close();
@@ -272,12 +233,15 @@ public class SettingsFragment extends Fragment {
     }
 
     private void saveUserProfile() {
+        String username = edtUsername.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
-        String eduLevel = edtEduLevel.getText().toString().trim();
-        String explanationStyle = edtExplanationStyle.getText().toString().trim();
+        String currentPassword = edtCurrentPassword.getText().toString().trim();
 
-        // Inputs Validation
+        if (TextUtils.isEmpty(username)) {
+            edtUsername.setError("Username is required");
+            return;
+        }
         if (TextUtils.isEmpty(email)) {
             edtEmail.setError("Email is required");
             return;
@@ -290,19 +254,32 @@ public class SettingsFragment extends Fragment {
             edtPhone.setError("Phone number is required");
             return;
         }
+        if (TextUtils.isEmpty(currentPassword)) {
+            edtCurrentPassword.setError("Password required to confirm changes 🔒");
+            return;
+        }
 
-        long result1 = userRepository.updateUserProfile(userId, email, phone);
-        long result2 = userRepository.updateUserPreferences(userId, eduLevel, explanationStyle, "Programming, Databases");
+        // Validate security password before saving
+        boolean isValidPassword = userRepository.validatePassword(userId, currentPassword);
+        if (!isValidPassword) {
+            edtCurrentPassword.setError("Incorrect password! Cannot save profile settings.");
+            Toast.makeText(getContext(), "❌ Incorrect password verification failed!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        if (result1 > 0 || result2 > 0) {
-            Toast.makeText(getContext(), "Profile & AI preferences saved successfully!", Toast.LENGTH_SHORT).show();
+        long result = userRepository.updateUserFullProfile(userId, username, email, phone);
+
+        if (result > 0) {
+            Toast.makeText(getContext(), "✅ Profile updated successfully!", Toast.LENGTH_SHORT).show();
+            edtCurrentPassword.setText("");
             
-            // Sync with SharedPreferences
             if (sharedPreferences != null) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("USERNAME_USER", username);
                 editor.putString("EMAIL_USER", email);
                 editor.apply();
             }
+            loadUserProfile();
         } else {
             Toast.makeText(getContext(), "Failed to update profile.", Toast.LENGTH_SHORT).show();
         }

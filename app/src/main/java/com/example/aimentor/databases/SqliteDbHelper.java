@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class SqliteDbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "studyAI";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 9;
 
     // Define table "users" and its columns
     public static final String TABLE_USERS = "users";
@@ -90,7 +90,7 @@ public class SqliteDbHelper extends SQLiteOpenHelper {
 
         // Pre-populate default data
         prePopulateUsers(db);
-        prePopulateCourses(db);
+        // prePopulateCourses(db); // Courses will be added dynamically by users
     }
 
     private void prePopulateUsers(SQLiteDatabase db) {
