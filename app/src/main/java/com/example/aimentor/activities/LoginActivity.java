@@ -22,44 +22,118 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.google.android.material.textfield.TextInputLayout;
+import android.widget.LinearLayout;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
 public class LoginActivity extends AppCompatActivity {
+    TextInputLayout tilUsername, tilPassword;
     EditText edtUsername, edtPassword;
     Button btnLogin;
+    TextView tvForgotPassword;
     UserRepository userRepository;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_linear_layout_login);
-        btnLogin = findViewById(R.id.btnSubmit); // tim phan tu ngoai giao dien
+        btnLogin = findViewById(R.id.btnSubmit); 
         edtUsername = findViewById(R.id.edtUsername);
         edtPassword = findViewById(R.id.edtPassword);
+        tilUsername = findViewById(R.id.tilUsername);
+        tilPassword = findViewById(R.id.tilPassword);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        
         userRepository = new UserRepository(LoginActivity.this);
 
         TextView tvSignUp = findViewById(R.id.tvSignUp);
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // nguoi dung chua co tk de dang nhap - can tao tai khoan
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
-        // bat su kien cho button - khi nguoi dung click vao
+        
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showForgotPasswordDialog();
+            }
+        });
+        
         checkLoginUser();
+    }
+    
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Password Recovery");
+        builder.setMessage("Please enter your Username and Email to create a new password.");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20);
+
+        final EditText inputUser = new EditText(this);
+        inputUser.setHint("Username");
+        layout.addView(inputUser);
+
+        final EditText inputEmail = new EditText(this);
+        inputEmail.setHint("Registered Email");
+        layout.addView(inputEmail);
+
+        final EditText inputNewPassword = new EditText(this);
+        inputNewPassword.setHint("New Password");
+        inputNewPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(inputNewPassword);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String u = inputUser.getText().toString().trim();
+                String e = inputEmail.getText().toString().trim();
+                String p = inputNewPassword.getText().toString().trim();
+                
+                if (TextUtils.isEmpty(u) || TextUtils.isEmpty(e) || TextUtils.isEmpty(p)) {
+                    Toast.makeText(LoginActivity.this, "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                if (p.length() < 8) {
+                    Toast.makeText(LoginActivity.this, "New password must be at least 8 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                // Reset password with user's new password
+                boolean success = userRepository.resetPassword(u, e, p);
+                if (success) {
+                    Toast.makeText(LoginActivity.this, "✅ Password changed successfully! Please log in again.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "❌ Username or Email does not match our records!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
     private void checkLoginUser(){
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = edtUsername.getText().toString().trim();
+                tilUsername.setError(null);
+                tilPassword.setError(null);
+                
                 if (TextUtils.isEmpty(username)){
-                    edtUsername.setError("Username is required");
+                    tilUsername.setError("Username cannot be empty");
                     return;
                 }
                 String password = edtPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(password)){
-                    edtPassword.setError("Password is required");
+                    tilPassword.setError("Password cannot be empty");
                     return;
                 }
                 // xu ly kiem tra xem tai khoan co ton tai trong co so du lieu hay ko?
@@ -80,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 } else {
                     // dang nhap that bai
-                    Toast.makeText(LoginActivity.this, "Account invalid", Toast.LENGTH_SHORT).show();
+                    tilPassword.setError("Invalid credentials or incorrect password!");
                 }
             }
         });

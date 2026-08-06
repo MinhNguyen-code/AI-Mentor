@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_solid"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quiz History"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/accent_purple"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Review your past answers. Tap any question to have AI explain it in detail."
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvKahootHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"/>
+        
+    <TextView
+        android:id="@+id/tvEmptyHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="No history found. Take a quiz first!"
+        android:textColor="@color/text_secondary"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseHistory"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Close"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="@color/accent_blue"
+        style="@style/Widget.Material3.Button"/>
+
+</LinearLayout>

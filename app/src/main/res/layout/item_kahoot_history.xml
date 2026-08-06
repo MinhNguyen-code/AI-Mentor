@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_kahoot_settings"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+        
+        <TextView
+            android:id="@+id/tvHistoryCourseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course Title"
+            android:textSize="12sp"
+            android:textColor="@color/accent_purple"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btnDeleteHistory"/>
+            
+        <ImageView
+            android:id="@+id/btnDeleteHistory"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@color/error"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvHistoryQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Question text goes here?"
+        android:textSize="15sp"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvHistoryUserAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Answer: Option A"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tvHistoryStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Correct"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap to ask AI for an explanation"
+        android:textSize="12sp"
+        android:textColor="@color/accent_purple"
+        android:gravity="end"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

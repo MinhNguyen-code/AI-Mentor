@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/card_glossy_glass"
+    android:background="@drawable/bg_dialog_solid"
     android:padding="20dp">
 
     <!-- Header bar -->
@@ -142,6 +142,78 @@
             app:backgroundTint="#26890C"
             app:cornerRadius="12dp"
             android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+    <!-- AI Explanation Container -->
+    <LinearLayout
+        android:id="@+id/layoutExplanation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/card_glossy_glass"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🧠 AI Explanation"
+            android:textColor="@color/accent_purple"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <ProgressBar
+            android:id="@+id/progressExplanation"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/accent_purple"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvAiExplanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Next Actions Container -->
+    <LinearLayout
+        android:id="@+id/layoutNextActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExplainWithAi"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_weight="1"
+            android:text="Explain with AI"
+            android:textColor="@color/accent_blue"
+            app:strokeColor="@color/accent_blue"
+            app:strokeWidth="2dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNextQuestion"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_weight="1"
+            android:text="Next Question"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/accent_purple"
+            app:cornerRadius="12dp"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

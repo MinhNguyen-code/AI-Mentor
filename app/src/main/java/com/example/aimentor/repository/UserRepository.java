@@ -47,7 +47,7 @@ public class UserRepository extends SqliteDbHelper {
     @SuppressLint("Range")
     public UserModel loginUser(String username, String password){
         UserModel user = null;
-        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER};
+        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER, XP_USER, LEVEL_USER};
         String condition = USERNAME_USER + " =? AND " + PASSWORD_USER + " =? ";
         String[] params = { username, PasswordUtils.hashPassword(password) };
         SQLiteDatabase db = this.getReadableDatabase();
@@ -64,6 +64,8 @@ public class UserRepository extends SqliteDbHelper {
             user.setEducationLevel(data.getString(data.getColumnIndex(EDU_LEVEL_USER)));
             user.setExplanationStyle(data.getString(data.getColumnIndex(EXPLANATION_STYLE_USER)));
             user.setSubjects(data.getString(data.getColumnIndex(SUBJECTS_USER)));
+            user.setXp(data.getInt(data.getColumnIndex(XP_USER)));
+            user.setLevel(data.getInt(data.getColumnIndex(LEVEL_USER)));
         }
         data.close();
         db.close();
@@ -73,7 +75,7 @@ public class UserRepository extends SqliteDbHelper {
     @SuppressLint("Range")
     public UserModel getUserById(int id){
         UserModel user = null;
-        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER, CREATED_AT};
+        String[] cols = {ID_USER, USERNAME_USER, EMAIL_USER, PHONE_USER, ROLE_USER, AVATAR_USER, EDU_LEVEL_USER, EXPLANATION_STYLE_USER, SUBJECTS_USER, CREATED_AT, XP_USER, LEVEL_USER};
         String condition = ID_USER + " =? ";
         String[] params = { String.valueOf(id) };
         SQLiteDatabase db = this.getReadableDatabase();
@@ -91,6 +93,8 @@ public class UserRepository extends SqliteDbHelper {
             user.setExplanationStyle(data.getString(data.getColumnIndex(EXPLANATION_STYLE_USER)));
             user.setSubjects(data.getString(data.getColumnIndex(SUBJECTS_USER)));
             user.setCreatedAt(data.getString(data.getColumnIndex(CREATED_AT)));
+            user.setXp(data.getInt(data.getColumnIndex(XP_USER)));
+            user.setLevel(data.getInt(data.getColumnIndex(LEVEL_USER)));
         }
         data.close();
         db.close();
@@ -109,6 +113,20 @@ public class UserRepository extends SqliteDbHelper {
         cursor.close();
         db.close();
         return isValid;
+    }
+
+    public boolean resetPassword(String username, String email, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD_USER, PasswordUtils.hashPassword(newPassword));
+        values.put(UPDATED_AT, getCurrentDate());
+
+        int rowsAffected = db.update(TABLE_USERS, values, 
+            USERNAME_USER + " = ? AND " + EMAIL_USER + " = ?", 
+            new String[]{username, email});
+            
+        db.close();
+        return rowsAffected > 0;
     }
 
     public long updateUserFullProfile(int id, String username, String email, String phone) {
@@ -158,5 +176,104 @@ public class UserRepository extends SqliteDbHelper {
         long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{ String.valueOf(id) });
         db.close();
         return result;
+    }
+
+    public long updateUserPassword(int id, String newPassword){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD_USER, PasswordUtils.hashPassword(newPassword));
+        values.put(UPDATED_AT, getCurrentDate());
+
+        long result = db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{ String.valueOf(id) });
+        db.close();
+        return result;
+    }
+
+    // ===== GAMIFICATION: XP & Level Methods =====
+
+    public int getXP(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + XP_USER + " FROM " + TABLE_USERS + " WHERE " + ID_USER + " = ?",
+                new String[]{String.valueOf(userId)});
+        int xp = 0;
+        if (cursor != null && cursor.moveToFirst()) {
+            xp = cursor.getInt(0);
+            cursor.close();
+        }
+        db.close();
+        return xp;
+    }
+
+    public void updateXP(int userId, int newXp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int level = (newXp / 5000) + 1;
+        ContentValues values = new ContentValues();
+        values.put(XP_USER, newXp);
+        values.put(LEVEL_USER, level);
+        values.put(UPDATED_AT, getCurrentDate());
+        db.update(TABLE_USERS, values, ID_USER + " =? ", new String[]{String.valueOf(userId)});
+        db.close();
+    }
+
+    public int getLevel(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + LEVEL_USER + " FROM " + TABLE_USERS + " WHERE " + ID_USER + " = ?",
+                new String[]{String.valueOf(userId)});
+        int level = 1;
+        if (cursor != null && cursor.moveToFirst()) {
+            level = cursor.getInt(0);
+            cursor.close();
+        }
+        db.close();
+        return level;
+    }
+
+    // ===== LEADERBOARD =====
+
+    @SuppressLint("Range")
+    public java.util.List<UserModel> getTopUsers(int limit) {
+        java.util.List<UserModel> users = new java.util.ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + ID_USER + ", " + USERNAME_USER + ", " + AVATAR_USER + ", " +
+                XP_USER + ", " + LEVEL_USER +
+                " FROM " + TABLE_USERS +
+                " ORDER BY " + XP_USER + " DESC" +
+                " LIMIT " + limit, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                UserModel user = new UserModel();
+                user.setId(cursor.getInt(cursor.getColumnIndex(ID_USER)));
+                user.setUsername(cursor.getString(cursor.getColumnIndex(USERNAME_USER)));
+                user.setAvatar(cursor.getString(cursor.getColumnIndex(AVATAR_USER)));
+                user.setXp(cursor.getInt(cursor.getColumnIndex(XP_USER)));
+                user.setLevel(cursor.getInt(cursor.getColumnIndex(LEVEL_USER)));
+                users.add(user);
+            }
+            cursor.close();
+        }
+        db.close();
+        return users;
+    }
+
+    /**
+     * Get the rank of a specific user (1-based).
+     */
+    public int getUserRank(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) + 1 FROM " + TABLE_USERS +
+                " WHERE " + XP_USER + " > (SELECT " + XP_USER + " FROM " + TABLE_USERS +
+                " WHERE " + ID_USER + " = ?)",
+                new String[]{String.valueOf(userId)});
+        int rank = 1;
+        if (cursor != null && cursor.moveToFirst()) {
+            rank = cursor.getInt(0);
+            cursor.close();
+        }
+        db.close();
+        return rank;
     }
 }

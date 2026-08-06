@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SIMS Portal Login"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
@@ -82,9 +82,9 @@
                     app:hintTextColor="@color/accent_blue"
                     app:boxStrokeColor="@color/accent_blue"
                     app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -113,6 +113,7 @@
                     app:passwordToggleTint="@color/text_secondary"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -125,6 +126,21 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Forgot Password Link -->
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Forgot Password?"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="8dp"/>
 
                 <!-- Submit Button -->
                 <com.google.android.material.button.MaterialButton

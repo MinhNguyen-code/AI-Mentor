@@ -93,19 +93,54 @@
             android:maxLines="3"
             android:ellipsize="end"/>
 
-        <!-- Play AI Kahoot Quiz Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnKahootQuiz"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:text="🎮 Play AI Kahoot Quiz"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="12dp"
-            app:backgroundTint="@color/accent_purple"
-            app:cornerRadius="10dp"
-            app:rippleColor="@color/white" />
+            android:weightSum="2">
+            
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnKahootQuiz"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Kahoot"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="4dp"
+                app:backgroundTint="@color/accent_purple"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/white" />
+                
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewProgress"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Progress"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="4dp"
+                app:backgroundTint="@color/accent_blue"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/white" />
+                
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEnrollCourse"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="Enroll Now"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:backgroundTint="@color/success"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

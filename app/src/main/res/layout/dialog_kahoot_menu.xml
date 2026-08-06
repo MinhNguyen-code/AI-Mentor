@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_solid"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tvKahootMenuHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kahoot Quiz"
+        android:textColor="@color/accent_purple"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Configure your quiz session or review past answers to improve your score."
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Quiz History Button (Outlined for secondary action) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnQuizHistory"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="View Quiz History"
+        android:textColor="@color/accent_purple"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:strokeColor="@color/accent_purple"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Start Quiz Settings Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_kahoot_settings"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Quiz Settings"
+            android:textColor="@color/accent_purple"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Questions"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+                
+            <Spinner
+                android:id="@+id/spinnerQuestionCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/accent_purple"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enable Timer (15s)"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:thumbTint="@color/accent_purple"
+                app:trackTint="#409C27B0"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Start Quiz Button (Glowing) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStartQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_btn_ai_glow"
+        android:text="Start Quiz"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="4dp"
+        android:layout_marginBottom="12dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseMenu"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Cancel"
+        android:textColor="@color/text_secondary" />
+
+</LinearLayout>

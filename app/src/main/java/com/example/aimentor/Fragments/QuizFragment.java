@@ -32,6 +32,7 @@ import com.example.aimentor.repository.ChatRepository;
 import com.example.aimentor.repository.UserRepository;
 import com.example.aimentor.services.AiMentorService;
 import com.example.aimentor.utils.AiConfig;
+import com.example.aimentor.utils.GamificationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +61,33 @@ public class QuizFragment extends Fragment {
             uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
-                    Toast.makeText(getContext(), "📷 Homework photo attached! Ready to analyze.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "📷 Photo attached from Gallery!", Toast.LENGTH_SHORT).show();
                     if (edtChatMessage != null && TextUtils.isEmpty(edtChatMessage.getText().toString())) {
                         edtChatMessage.setText("📷 Please solve this attached homework diagram / equation.");
+                    }
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
+            new ActivityResultContracts.TakePicturePreview(),
+            bitmap -> {
+                if (bitmap != null && getContext() != null) {
+                    try {
+                        java.io.File cachePath = new java.io.File(getContext().getCacheDir(), "images");
+                        cachePath.mkdirs(); // don't forget to make the directory
+                        java.io.File file = new java.io.File(cachePath, "captured_image_" + System.currentTimeMillis() + ".jpg");
+                        java.io.FileOutputStream stream = new java.io.FileOutputStream(file);
+                        bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, stream);
+                        stream.close();
+                        selectedImageUri = android.net.Uri.fromFile(file);
+                        Toast.makeText(getContext(), "📷 Photo captured successfully!", Toast.LENGTH_SHORT).show();
+                        if (edtChatMessage != null && TextUtils.isEmpty(edtChatMessage.getText().toString())) {
+                            edtChatMessage.setText("📷 Please solve this attached homework diagram / equation.");
+                        }
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error saving captured photo", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -144,7 +169,7 @@ public class QuizFragment extends Fragment {
 
         // Image Attachment listener
         if (btnAttachImage != null) {
-            btnAttachImage.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+            btnAttachImage.setOnClickListener(v -> showImageAttachmentDialog());
         }
 
         // Recent History Sidebar List listener (Gần đây)
@@ -180,11 +205,23 @@ public class QuizFragment extends Fragment {
         // Setup Quick Suggestion Chips
         setupChipListeners();
 
-        // Check if there is a pending prompt from HomeFragment
+        // Check if there is a pending prompt on first creation
+        checkAndSendPendingPrompt();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Check if there is a pending prompt when navigating back to this tab
+        checkAndSendPendingPrompt();
+    }
+
+    private void checkAndSendPendingPrompt() {
         if (pendingPrompt != null && !pendingPrompt.trim().isEmpty()) {
             String promptToSend = pendingPrompt;
             pendingPrompt = null;
-            sendUserMessage(promptToSend);
+            // Delay slightly to ensure UI is ready
+            rvChatMessages.postDelayed(() -> sendUserMessage(promptToSend), 300);
         }
     }
 
@@ -224,22 +261,31 @@ public class QuizFragment extends Fragment {
     private void updateModelSelectorUi() {
         if (tvSelectedModel != null && getContext() != null) {
             String currentModelId = AiConfig.getSelectedModel(getContext());
-            String displayName = AiConfig.getModelDisplayName(currentModelId);
+            String displayName = AiConfig.getModelPillName(currentModelId);
             tvSelectedModel.setText(displayName + " ▼");
         }
     }
 
     private void showModelSelectionDialog() {
-        if (getContext() == null) return;
+        if (getContext() == null || btnSelectModel == null) return;
 
         String currentModelId = AiConfig.getSelectedModel(getContext());
 
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_model_selector_compact, null);
         LinearLayout containerModels = dialogView.findViewById(R.id.containerModels);
 
-        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor)
-                .setView(dialogView)
-                .create();
+        // Create the popup window with fixed 240dp width to prevent collapse
+        int popupWidth = (int) (240 * getContext().getResources().getDisplayMetrics().density);
+        android.widget.PopupWindow popupWindow = new android.widget.PopupWindow(
+                dialogView,
+                popupWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+
+        // Set elevation and transparent background
+        popupWindow.setElevation(16f);
+        popupWindow.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         for (int i = 0; i < AiConfig.MODEL_IDS.length; i++) {
             final String modelId = AiConfig.MODEL_IDS[i];
@@ -268,13 +314,22 @@ public class QuizFragment extends Fragment {
                 AiConfig.setSelectedModel(getContext(), modelId);
                 updateModelSelectorUi();
                 Toast.makeText(getContext(), "Selected: " + name, Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                popupWindow.dismiss();
             });
 
             containerModels.addView(itemView);
         }
 
-        dialog.show();
+        // Measure layout dimensions to position above the anchor button
+        dialogView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int measuredWidth = dialogView.getMeasuredWidth();
+        int measuredHeight = dialogView.getMeasuredHeight();
+
+        // Calculate offset to align popup above btnSelectModel
+        int xOffset = -(measuredWidth - btnSelectModel.getWidth());
+        int yOffset = -(measuredHeight + btnSelectModel.getHeight() + 20);
+
+        popupWindow.showAsDropDown(btnSelectModel, xOffset, yOffset);
     }
 
     private void setupChipListeners() {
@@ -302,8 +357,10 @@ public class QuizFragment extends Fragment {
         }
 
         String finalPrompt = userPrompt;
+        String imageUriStr = null;
         if (selectedImageUri != null) {
-            finalPrompt = "[📷 Homework Image Attached: " + selectedImageUri.getLastPathSegment() + "]\n" + userPrompt;
+            imageUriStr = selectedImageUri.toString();
+            finalPrompt = "[📷 Attached Image]\n" + userPrompt;
             selectedImageUri = null; // reset attachment after sending
         }
 
@@ -324,14 +381,24 @@ public class QuizFragment extends Fragment {
         ChatMessageModel userMessage = new ChatMessageModel(finalPrompt, true);
         userMessage.setUserId(userId);
         userMessage.setModelUsed(selectedModel);
+        if (imageUriStr != null) {
+            userMessage.setImageUri(imageUriStr);
+        }
         if (userId != -1) {
-            long insertedId = chatRepository.insertChatMessage(userId, finalPrompt, true, selectedModel);
+            long insertedId = chatRepository.insertChatMessage(userId, finalPrompt, true, selectedModel, imageUriStr);
             userMessage.setId(insertedId);
         }
         chatList.add(userMessage);
         int userPos = chatList.size() - 1;
         chatAdapter.notifyItemInserted(userPos);
         rvChatMessages.scrollToPosition(userPos);
+
+        // Award XP for asking a question
+        if (userId != -1 && getContext() != null) {
+            GamificationManager.awardXP(getContext(), userId, GamificationManager.XP_ASK_AI);
+            int questionCount = chatRepository.getQuestionCount(userId);
+            GamificationManager.checkQuestionBadges(getContext(), userId, questionCount);
+        }
 
         // 2. Clear input text
         if (edtChatMessage != null) {
@@ -394,9 +461,13 @@ public class QuizFragment extends Fragment {
         if (getContext() == null || userId == -1) return;
 
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_chat_history, null);
-        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.Theme_AIMentor)
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogView)
                 .create();
+                
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
 
         RecyclerView rvHistoryList = dialogView.findViewById(R.id.rvHistoryList);
         EditText edtSearchHistory = dialogView.findViewById(R.id.edtSearchHistory);
@@ -464,5 +535,20 @@ public class QuizFragment extends Fragment {
 
         btnCloseHistory.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+    private void showImageAttachmentDialog() {
+        if (getContext() == null) return;
+        String[] options = {"📷 Take Photo", "🖼️ Choose from Gallery"};
+        new android.app.AlertDialog.Builder(getContext())
+                .setTitle("Attach Image")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        takePhotoLauncher.launch(null);
+                    } else if (which == 1) {
+                        pickImageLauncher.launch("image/*");
+                    }
+                })
+                .show();
     }
 }

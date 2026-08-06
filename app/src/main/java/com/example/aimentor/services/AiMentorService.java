@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class AiMentorService {
 
     private static final String TAG = "AiMentorService";
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executor = Executors.newCachedThreadPool();
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public interface AiResponseCallback {

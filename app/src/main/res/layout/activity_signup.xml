@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Register an Account"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginTop="12dp"
@@ -73,6 +73,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
+                <!-- Full Name TextInput -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Full Name"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Username TextInput -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilUsername"
@@ -85,6 +111,7 @@
                     app:boxStrokeWidthFocused="2dp"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -113,6 +140,7 @@
                     app:passwordToggleTint="@color/text_secondary"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -125,6 +153,59 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Confirm Password TextInput -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/text_secondary"
+                    app:startIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Password Strength Indicator -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password Strength: "
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvPasswordStrength"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Too Short 🔴"
+                        android:textColor="@color/error"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <!-- Email TextInput -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -139,6 +220,7 @@
                     app:boxStrokeWidthFocused="2dp"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -165,6 +247,7 @@
                     app:boxStrokeWidthFocused="2dp"
                     app:startIconTint="@color/text_secondary"
                     android:textColorHint="@color/text_secondary"
+                    app:errorEnabled="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText

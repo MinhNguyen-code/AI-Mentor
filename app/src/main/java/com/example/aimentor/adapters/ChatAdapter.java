@@ -64,6 +64,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             UserViewHolder userHolder = (UserViewHolder) holder;
             userHolder.tvUserMessage.setText(chatMessage.getMessage());
             userHolder.tvUserTime.setText(formattedTime);
+            
+            if (chatMessage.getImageUri() != null && !chatMessage.getImageUri().isEmpty()) {
+                userHolder.ivAttachedImage.setVisibility(View.VISIBLE);
+                try {
+                    android.net.Uri uri = android.net.Uri.parse(chatMessage.getImageUri());
+                    userHolder.ivAttachedImage.setImageURI(uri);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                userHolder.ivAttachedImage.setVisibility(View.GONE);
+            }
         } else if (holder instanceof AiViewHolder) {
             AiViewHolder aiHolder = (AiViewHolder) holder;
             if (chatMessage.isTyping()) {
@@ -73,7 +85,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             } else {
                 aiHolder.layoutTyping.setVisibility(View.GONE);
                 aiHolder.tvAiMessage.setVisibility(View.VISIBLE);
-                aiHolder.tvAiMessage.setText(chatMessage.getMessage());
+                formatAiMessage(aiHolder.tvAiMessage, chatMessage.getMessage());
                 if (aiHolder.btnBookmark != null) {
                     aiHolder.btnBookmark.setVisibility(View.VISIBLE);
                     aiHolder.btnBookmark.setText(chatMessage.isBookmarked() ? "⭐ Saved" : "⭐ Save");
@@ -93,13 +105,41 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return chatList != null ? chatList.size() : 0;
     }
 
+    private void formatAiMessage(TextView textView, String message) {
+        if (message == null) {
+            textView.setText("");
+            return;
+        }
+        
+        // Escape HTML to prevent injection and code block rendering issues
+        String escaped = message.replace("<", "&lt;").replace(">", "&gt;");
+        
+        // Format New Lines
+        String html = escaped.replace("\n", "<br>");
+        
+        // Format Bold (**text**)
+        html = html.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+        
+        // Format Headers (# text)
+        html = html.replaceAll("### (.*?)<br>", "<br><b>$1</b><br>");
+        html = html.replaceAll("## (.*?)<br>", "<br><b>$1</b><br>");
+        html = html.replaceAll("# (.*?)<br>", "<br><b>$1</b><br>");
+        
+        // Format Italic (*text*)
+        html = html.replaceAll("\\*(.*?)\\*", "<i>$1</i>");
+
+        textView.setText(android.text.Html.fromHtml(html, android.text.Html.FROM_HTML_MODE_LEGACY));
+    }
+
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView tvUserMessage, tvUserTime;
+        android.widget.ImageView ivAttachedImage;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUserMessage = itemView.findViewById(R.id.tvUserMessage);
             tvUserTime = itemView.findViewById(R.id.tvUserTime);
+            ivAttachedImage = itemView.findViewById(R.id.ivAttachedImage);
         }
     }
 

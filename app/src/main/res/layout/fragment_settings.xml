@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="My Profile"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Student Username"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginTop="12dp"/>
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Personal Information"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp"/>
@@ -232,6 +232,29 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
                         android:inputType="phone"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- New Password Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNewPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="New Password (Leave blank to keep current)"
+                    app:hintTextColor="@color/accent_blue"
+                    app:boxStrokeColor="@color/accent_blue"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNewPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textPassword"
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

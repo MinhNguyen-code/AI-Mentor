@@ -20,6 +20,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private List<CourseModel> coursesList;
     private OnCourseDeleteListener deleteListener;
     private OnKahootQuizClickListener kahootListener;
+    private OnProgressClickListener progressListener;
+    private OnEnrollClickListener enrollListener;
+    private boolean isEnrolledView;
+
+    public interface OnEnrollClickListener {
+        void onEnrollClick(CourseModel course);
+    }
 
     public interface OnCourseDeleteListener {
         void onCourseDelete(int courseId, int position);
@@ -29,13 +36,26 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         void onKahootQuizClick(CourseModel course);
     }
 
-    public CourseAdapter(List<CourseModel> coursesList, OnCourseDeleteListener deleteListener) {
+    public interface OnProgressClickListener {
+        void onProgressClick(CourseModel course);
+    }
+
+    public CourseAdapter(List<CourseModel> coursesList, boolean isEnrolledView, OnCourseDeleteListener deleteListener) {
         this.coursesList = coursesList;
+        this.isEnrolledView = isEnrolledView;
         this.deleteListener = deleteListener;
     }
 
     public void setOnKahootQuizClickListener(OnKahootQuizClickListener kahootListener) {
         this.kahootListener = kahootListener;
+    }
+
+    public void setOnProgressClickListener(OnProgressClickListener progressListener) {
+        this.progressListener = progressListener;
+    }
+
+    public void setOnEnrollClickListener(OnEnrollClickListener enrollListener) {
+        this.enrollListener = enrollListener;
     }
 
     @NonNull
@@ -68,6 +88,34 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 }
             });
         }
+
+        // Handle Progress Action
+        if (holder.btnViewProgress != null) {
+            holder.btnViewProgress.setOnClickListener(v -> {
+                if (progressListener != null) {
+                    progressListener.onProgressClick(course);
+                }
+            });
+        }
+
+        // Handle Enroll Action
+        if (holder.btnEnrollCourse != null) {
+            holder.btnEnrollCourse.setOnClickListener(v -> {
+                if (enrollListener != null) {
+                    enrollListener.onEnrollClick(course);
+                }
+            });
+        }
+
+        if (isEnrolledView) {
+            if (holder.btnKahootQuiz != null) holder.btnKahootQuiz.setVisibility(View.VISIBLE);
+            if (holder.btnViewProgress != null) holder.btnViewProgress.setVisibility(View.VISIBLE);
+            if (holder.btnEnrollCourse != null) holder.btnEnrollCourse.setVisibility(View.GONE);
+        } else {
+            if (holder.btnKahootQuiz != null) holder.btnKahootQuiz.setVisibility(View.GONE);
+            if (holder.btnViewProgress != null) holder.btnViewProgress.setVisibility(View.GONE);
+            if (holder.btnEnrollCourse != null) holder.btnEnrollCourse.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -86,7 +134,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView tvCourseCode, tvCourseCredits, tvCourseTitle, tvCourseDesc;
         ImageView btnDeleteCourse;
-        MaterialButton btnKahootQuiz;
+        MaterialButton btnKahootQuiz, btnViewProgress, btnEnrollCourse;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +144,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             tvCourseDesc = itemView.findViewById(R.id.tvCourseDesc);
             btnDeleteCourse = itemView.findViewById(R.id.btnDeleteCourse);
             btnKahootQuiz = itemView.findViewById(R.id.btnKahootQuiz);
+            btnViewProgress = itemView.findViewById(R.id.btnViewProgress);
+            btnEnrollCourse = itemView.findViewById(R.id.btnEnrollCourse);
         }
     }
 }

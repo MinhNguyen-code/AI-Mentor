@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Welcome back!"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -74,6 +74,61 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- GAMIFICATION: LEVEL & XP PROGRESS BAR -->
+            <LinearLayout
+                android:id="@+id/levelContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_glossy_glass"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/headerContainer"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvUserLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LEVEL 1"
+                        android:textColor="@color/accent_purple"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvUserXp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 / 5000 XP"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/pbXpProgress"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="10dp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/bg_glow_badge_cyan" />
+
+                <TextView
+                    android:id="@+id/tvXpToNextLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5000 XP to Level 2"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="10sp"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
             <!-- 2. AI ASSISTANT HYBRID PROMPT BOX HERO CARD -->
             <LinearLayout
                 android:id="@+id/cardAiPromptHero"
@@ -83,7 +138,7 @@
                 android:background="@drawable/card_ai_prompt_box"
                 android:padding="18dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/headerContainer"
+                app:layout_constraintTop_toBottomOf="@id/levelContainer"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <!-- Title bar -->
@@ -157,60 +212,7 @@
                         android:paddingVertical="6dp" />
                 </LinearLayout>
 
-                <!-- Quick Prompt Chips -->
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:layout_marginTop="12dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/chipPrompt1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💡 Java OOP Tip"
-                            android:textColor="@color/text_primary"
-                            android:textSize="11sp"
-                            android:background="@drawable/card_glossy_glass"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp"
-                            android:clickable="true"
-                            android:focusable="true" />
-
-                        <TextView
-                            android:id="@+id/chipPrompt2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📊 Database SQL ERD"
-                            android:textColor="@color/text_primary"
-                            android:textSize="11sp"
-                            android:background="@drawable/card_glossy_glass"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp"
-                            android:layout_marginStart="8dp"
-                            android:clickable="true"
-                            android:focusable="true" />
-
-                        <TextView
-                            android:id="@+id/chipPrompt3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📅 Next Exam Schedule"
-                            android:textColor="@color/text_primary"
-                            android:textSize="11sp"
-                            android:background="@drawable/card_glossy_glass"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp"
-                            android:layout_marginStart="8dp"
-                            android:clickable="true"
-                            android:focusable="true" />
-                    </LinearLayout>
-                </HorizontalScrollView>
 
                 <!-- Dynamic AI Response Preview Text -->
                 <TextView
@@ -258,12 +260,10 @@
                 android:rowCount="2"
                 android:columnCount="2"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 app:layout_constraintTop_toBottomOf="@id/actionsHeader"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <!-- Action 1: Courses -->
                 <LinearLayout
@@ -343,9 +343,9 @@
                         android:layout_marginTop="10dp" />
                 </LinearLayout>
 
-                <!-- Action 3: Schedule -->
+                <!-- Action 3: Ranking -->
                 <LinearLayout
-                    android:id="@+id/btnActionSchedule"
+                    android:id="@+id/btnActionRanking"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -367,15 +367,15 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/home_icon"
+                            android:src="@drawable/ic_ranking"
                             app:tint="@color/accent_blue"
-                            android:contentDescription="Schedule Icon" />
+                            android:contentDescription="Ranking Icon" />
                     </FrameLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Schedule"
+                        android:text="Ranking"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -421,6 +421,180 @@
                         android:layout_marginTop="10dp" />
                 </LinearLayout>
             </GridLayout>
+
+            <!-- 4. ACADEMIC STATISTICS -->
+            <LinearLayout
+                android:id="@+id/statsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/gridActions"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="16dp"
+                    android:background="@color/accent_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Learning Analytics &amp; Stats"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutStatsCards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/statsHeader"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <!-- Card 1: Quiz Accuracy -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/card_glossy_glass"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🎯 Quiz Accuracy"
+                        android:textColor="@color/accent_blue"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvQuizAccuracy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textColor="@color/text_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvQuizRatio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No quizzes completed yet"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- Card 2: Most Studied Subject -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/card_glossy_glass"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📚 Most Studied"
+                        android:textColor="@color/accent_purple"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMostStudiedCourse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="None"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:layout_marginTop="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvMostStudiedSessions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 quiz sessions completed"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 5. AI SMART ANALYSIS -->
+            <LinearLayout
+                android:id="@+id/aiAnalysisHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutStatsCards"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="16dp"
+                    android:background="@color/accent_purple" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Smart Study Analysis"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAiAnalysis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_ai_prompt_box"
+                android:padding="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintTop_toBottomOf="@id/aiAnalysisHeader"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Study Habits &amp; Progress Insights"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAiSmartAnalysis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculating study patterns... Ask AI questions or take quizzes to receive personalized AI recommendations and progress reviews."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

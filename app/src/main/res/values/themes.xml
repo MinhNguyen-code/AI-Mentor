@@ -22,5 +22,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="RoundedImageViewShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
     <style name="Theme.AIMentor" parent="Base.Theme.AIMentor" />
 </resources>

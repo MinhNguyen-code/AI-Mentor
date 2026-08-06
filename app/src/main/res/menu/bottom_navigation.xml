@@ -16,4 +16,8 @@
         android:title="Settings"
         android:icon="@drawable/settings_icon"
         android:id="@+id/Settings_menu"/>
+    <item
+        android:title="Ranking"
+        android:icon="@drawable/ranking_icon"
+        android:id="@+id/Leaderboard_menu"/>
 </menu>

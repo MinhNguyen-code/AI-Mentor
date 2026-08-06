@@ -21,7 +21,7 @@ public class ThemeUtils {
     public static boolean isDarkMode(Context context) {
         if (context == null) return true;
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getBoolean(KEY_IS_DARK_MODE, true); // Default to Dark Mode
+        return prefs.getBoolean(KEY_IS_DARK_MODE, false); // Default to Light Mode
     }
 
     public static void setDarkMode(Context context, boolean isDark) {

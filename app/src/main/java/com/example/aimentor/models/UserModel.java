@@ -11,6 +11,8 @@ public class UserModel {
     private String educationLevel;
     private String explanationStyle;
     private String subjects;
+    private int xp;
+    private int level;
     private String createdAt;
     private String updatedAt;
 
@@ -108,5 +110,21 @@ public class UserModel {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

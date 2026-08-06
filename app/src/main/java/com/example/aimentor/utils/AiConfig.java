@@ -53,7 +53,8 @@ public class AiConfig {
             "You specialize in Programming (Java, C#, Python), Database Design & SQL, Web Development, Networking, Cyber Security, " +
             "Software Engineering (Agile, SOLID, OOP), and general academic guidance. " +
             "Keep your explanations concise, clear, well-structured, and easy to understand. " +
-            "Use bullet points or code snippets where appropriate.";
+            "CRITICAL: Do NOT use any Markdown formatting (no asterisks ** for bold, no # for headers, no backticks ` for code). " +
+            "Use ONLY plain text with standard line breaks and simple dash (-) for bullet points.";
 
     public static String getApiKey() {
         if (BuildConfig.GROQ_API_KEY != null && !BuildConfig.GROQ_API_KEY.trim().isEmpty()) {
@@ -63,9 +64,9 @@ public class AiConfig {
     }
 
     public static String getSelectedModel(Context context) {
-        if (context == null) return MODEL_LLAMA_8B;
+        if (context == null) return MODEL_LLAMA_70B;
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_SELECTED_MODEL, MODEL_LLAMA_8B);
+        return prefs.getString(KEY_SELECTED_MODEL, MODEL_LLAMA_70B);
     }
 
     public static void setSelectedModel(Context context, String modelId) {
@@ -81,5 +82,13 @@ public class AiConfig {
             }
         }
         return "Llama 3.1 8B (Fast)";
+    }
+
+    public static String getModelPillName(String modelId) {
+        if (MODEL_LLAMA_8B.equals(modelId)) return "Llama 8B";
+        if (MODEL_LLAMA_70B.equals(modelId)) return "Llama 70B";
+        if (MODEL_GPT_OSS.equals(modelId)) return "GPT 20B";
+        if (MODEL_COMPOUND_MINI.equals(modelId)) return "Mini";
+        return "Llama 8B";
     }
 }

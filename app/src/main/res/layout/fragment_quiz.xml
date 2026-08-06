@@ -46,39 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BTEC AI Mentor Chatbot"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/btnSelectModel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/card_glossy_glass"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="3dp"
-                android:layout_marginTop="3dp"
-                android:clickable="true"
-                android:focusable="true">
-
-                <View
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:background="@drawable/bg_icon_circle_blue"
-                    android:backgroundTint="@color/accent_blue" />
-
-                <TextView
-                    android:id="@+id/tvSelectedModel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⚡ Llama 3.1 8B (Economical) ▼"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="4dp"/>
-            </LinearLayout>
         </LinearLayout>
 
         <!-- History List Button (Gần đây) -->
@@ -250,6 +220,29 @@
             android:paddingVertical="8dp"
             android:maxLines="4"
             android:inputType="textCapSentences|textMultiLine" />
+
+        <!-- Model Selection Pill Button -->
+        <LinearLayout
+            android:id="@+id/btnSelectModel"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/card_glossy_glass"
+            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/tvSelectedModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Llama 8B ▼"
+                android:textColor="@color/accent_blue"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSendMessage"

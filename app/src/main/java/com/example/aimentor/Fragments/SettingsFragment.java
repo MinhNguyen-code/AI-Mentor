@@ -35,7 +35,7 @@ import java.io.InputStream;
 public class SettingsFragment extends Fragment {
 
     private TextView tvDisplayUsername, tvDisplayRole, tvDisplayUserId, tvDisplayDateJoined;
-    private EditText edtUsername, edtEmail, edtPhone, edtCurrentPassword;
+    private EditText edtUsername, edtEmail, edtPhone, edtCurrentPassword, edtNewPassword;
     private ImageView imgAvatar;
     private Button btnSaveProfile;
     private UserRepository userRepository;
@@ -92,6 +92,7 @@ public class SettingsFragment extends Fragment {
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPhone = view.findViewById(R.id.edtPhone);
         edtCurrentPassword = view.findViewById(R.id.edtCurrentPassword);
+        edtNewPassword = view.findViewById(R.id.edtNewPassword);
         imgAvatar = view.findViewById(R.id.imgAvatar);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
@@ -268,6 +269,13 @@ public class SettingsFragment extends Fragment {
         }
 
         long result = userRepository.updateUserFullProfile(userId, username, email, phone);
+        
+        String newPassword = edtNewPassword.getText().toString().trim();
+        if (!TextUtils.isEmpty(newPassword)) {
+            userRepository.updateUserPassword(userId, newPassword);
+            Toast.makeText(getContext(), "🔐 Password updated successfully!", Toast.LENGTH_SHORT).show();
+            edtNewPassword.setText("");
+        }
 
         if (result > 0) {
             Toast.makeText(getContext(), "✅ Profile updated successfully!", Toast.LENGTH_SHORT).show();

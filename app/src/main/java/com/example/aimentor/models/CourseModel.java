@@ -6,16 +6,18 @@ public class CourseModel {
     private String title;
     private int credits;
     private String description;
+    private int totalQuestions;
 
     public CourseModel() {
     }
 
-    public CourseModel(int id, String code, String title, int credits, String description) {
+    public CourseModel(int id, String code, String title, int credits, String description, int totalQuestions) {
         this.id = id;
         this.code = code;
         this.title = title;
         this.credits = credits;
         this.description = description;
+        this.totalQuestions = totalQuestions;
     }
 
     public int getId() {
@@ -56,5 +58,13 @@ public class CourseModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getTotalQuestions() {
+        return totalQuestions;
+    }
+
+    public void setTotalQuestions(int totalQuestions) {
+        this.totalQuestions = totalQuestions;
     }
 }

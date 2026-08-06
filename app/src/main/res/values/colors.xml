@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Light Mode Background Palette -->
-    <color name="bg_dark_start">#F8FAFC</color>    <!-- Clean off-white background -->
-    <color name="bg_dark_center">#F1F5F9</color>
-    <color name="bg_dark_end">#E2E8F0</color>      <!-- Light slate grey -->
+    <color name="bg_dark_start">#FFFFFF</color>    <!-- Pure White background start -->
+    <color name="bg_dark_center">#F8FAFC</color>   <!-- Clean off-white -->
+    <color name="bg_dark_end">#F1F5F9</color>      <!-- Light grey-blue -->
     
     <!-- Light Glass/Card Overlay Colors -->
-    <color name="glass_card_bg">#FFFFFF</color>     <!-- Crisp white card background -->
-    <color name="glass_card_stroke">#CBD5E1</color> <!-- Light grey card border -->
+    <color name="glass_card_bg">#FDFDFD</color>     <!-- Very light grey-white for card content -->
+    <color name="glass_card_stroke">#94A3B8</color> <!-- Darker, bolder border outline -->
     <color name="glass_card_stroke_focused">#0284C7</color>
     
     <!-- Brand Accents -->
@@ -24,4 +24,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="error">#DC2626</color>
+    <color name="success">#10B981</color>
 </resources>

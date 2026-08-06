@@ -19,6 +19,10 @@ public class ChatRepository {
     }
 
     public long insertChatMessage(int userId, String message, boolean isUser, String modelUsed) {
+        return insertChatMessage(userId, message, isUser, modelUsed, null);
+    }
+
+    public long insertChatMessage(int userId, String message, boolean isUser, String modelUsed, String imageUri) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SqliteDbHelper.USER_ID_CHAT, userId);
@@ -26,6 +30,7 @@ public class ChatRepository {
         values.put(SqliteDbHelper.IS_USER_CHAT, isUser ? 1 : 0);
         values.put(SqliteDbHelper.MODEL_USED_CHAT, modelUsed);
         values.put(SqliteDbHelper.IS_BOOKMARKED_CHAT, 0);
+        values.put(SqliteDbHelper.IMAGE_URI_CHAT, imageUri);
         values.put(SqliteDbHelper.TIMESTAMP_CHAT, System.currentTimeMillis());
 
         long result = db.insert(SqliteDbHelper.TABLE_CHAT_HISTORY, null, values);
@@ -54,6 +59,12 @@ public class ChatRepository {
                 msg.setUser(cursor.getInt(cursor.getColumnIndexOrThrow(SqliteDbHelper.IS_USER_CHAT)) == 1);
                 msg.setModelUsed(cursor.getString(cursor.getColumnIndexOrThrow(SqliteDbHelper.MODEL_USED_CHAT)));
                 msg.setBookmarked(cursor.getInt(cursor.getColumnIndexOrThrow(SqliteDbHelper.IS_BOOKMARKED_CHAT)) == 1);
+                
+                int imageUriIndex = cursor.getColumnIndex(SqliteDbHelper.IMAGE_URI_CHAT);
+                if (imageUriIndex != -1 && !cursor.isNull(imageUriIndex)) {
+                    msg.setImageUri(cursor.getString(imageUriIndex));
+                }
+                
                 msg.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow(SqliteDbHelper.TIMESTAMP_CHAT)));
                 list.add(msg);
             }
@@ -84,6 +95,12 @@ public class ChatRepository {
                 msg.setUser(cursor.getInt(cursor.getColumnIndexOrThrow(SqliteDbHelper.IS_USER_CHAT)) == 1);
                 msg.setModelUsed(cursor.getString(cursor.getColumnIndexOrThrow(SqliteDbHelper.MODEL_USED_CHAT)));
                 msg.setBookmarked(cursor.getInt(cursor.getColumnIndexOrThrow(SqliteDbHelper.IS_BOOKMARKED_CHAT)) == 1);
+                
+                int imageUriIndex = cursor.getColumnIndex(SqliteDbHelper.IMAGE_URI_CHAT);
+                if (imageUriIndex != -1 && !cursor.isNull(imageUriIndex)) {
+                    msg.setImageUri(cursor.getString(imageUriIndex));
+                }
+                
                 msg.setTimestamp(cursor.getLong(cursor.getColumnIndexOrThrow(SqliteDbHelper.TIMESTAMP_CHAT)));
                 list.add(msg);
             }

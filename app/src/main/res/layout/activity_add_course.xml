@@ -61,28 +61,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <!-- Course Code Input -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilCourseCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Course Code (e.g. SD201)"
-                    app:hintTextColor="@color/accent_blue"
-                    app:boxStrokeColor="@color/accent_blue"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:startIconTint="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtCourseCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_primary"
-                        android:inputType="textCapCharacters"
-                        android:maxLines="1"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Course Title Input -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -108,29 +87,7 @@
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Credits Input -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilCourseCredits"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="Credits (e.g. 15)"
-                    app:hintTextColor="@color/accent_blue"
-                    app:boxStrokeColor="@color/accent_blue"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:startIconTint="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtCourseCredits"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_primary"
-                        android:inputType="number"
-                        android:maxLines="1"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Description Input -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -156,6 +113,46 @@
                         android:gravity="top|start"
                         android:scrollbars="vertical"/>
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- AI Explanation Style -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Explanation Style"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioGroup
+                    android:id="@+id/rgExplanationStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rbStyleShort"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Short &amp; Concise (1-2 weeks)"
+                        android:textColor="@color/text_primary"/>
+
+                    <RadioButton
+                        android:id="@+id/rbStyleDetailed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Detailed with Examples (3-4 weeks)"
+                        android:textColor="@color/text_primary"/>
+
+                    <RadioButton
+                        android:id="@+id/rbStyleStepByStep"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Step-by-Step Breakdown (1-2 months)"
+                        android:textColor="@color/text_primary"
+                        android:checked="true"/>
+                </RadioGroup>
 
                 <!-- Save Button -->
                 <com.google.android.material.button.MaterialButton

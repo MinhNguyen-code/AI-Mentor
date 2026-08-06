@@ -8,11 +8,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.aimentor.Fragments.CategoryFragment;
 import com.example.aimentor.Fragments.HomeFragment;
+import com.example.aimentor.Fragments.LeaderboardFragment;
 import com.example.aimentor.Fragments.QuizFragment;
 import com.example.aimentor.Fragments.SettingsFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
-    private final int ItemCount = 4;
+    private final int ItemCount = 5;
     public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
@@ -31,6 +32,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         }
         if (position == 3) {
             return new SettingsFragment();
+        }
+        if (position == 4) {
+            return new LeaderboardFragment();
         }
         return new HomeFragment();
     }

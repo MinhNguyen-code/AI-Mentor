@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <!-- Semi-transparent glossy dark container fill -->
-    <solid android:color="@color/glass_card_bg" />
+    <!-- Solid background for dialogs to prevent text bleed-through -->
+    <solid android:color="@color/bg_dark_center" />
     
     <!-- Thin light stroke/border for glass reflection edge -->
     <stroke
@@ -10,5 +10,5 @@
         android:color="@color/glass_card_stroke" />
     
     <!-- Rounded corners for modern look -->
-    <corners android:radius="16dp" />
+    <corners android:radius="24dp" />
 </shape>
