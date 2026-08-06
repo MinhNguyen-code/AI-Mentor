@@ -32,6 +32,9 @@ public class AiMentorService {
         void onError(String errorMessage);
     }
 
+    // TODO [AIM-205]: Integrate GroqCloud LLaMA 3 model for rapid inference.
+    // Jira Assignee: MinhNguyen - Sprint 2
+    // FIXME [AIM-210]: Currently Mocking Vision support. Need to switch to Gemini API in future sprints to handle real Base64 image uploads.
     public static void sendMessageToAi(String selectedModel, String educationLevel, String explanationStyle, List<ChatMessageModel> chatHistory, String newUserPrompt, AiResponseCallback callback) {
         executor.execute(new Runnable() {
             @Override

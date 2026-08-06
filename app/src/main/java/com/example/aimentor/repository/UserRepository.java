@@ -27,6 +27,22 @@ public class UserRepository extends SqliteDbHelper {
     }
 
     public long saveUserAccount(String username, String password, String email, String phone){
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        // Check if username or email already exists
+        Cursor cursor = db.query(TABLE_USERS, new String[]{ID_USER},
+                USERNAME_USER + " =? OR " + EMAIL_USER + " =?",
+                new String[]{username, email},
+                null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            db.close();
+            return -1; // User already exists
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
         String currentDate = getCurrentDate();
         ContentValues values = new ContentValues();
         values.put(USERNAME_USER, username);
@@ -38,7 +54,7 @@ public class UserRepository extends SqliteDbHelper {
         values.put(EXPLANATION_STYLE_USER, "Step-by-Step");
         values.put(SUBJECTS_USER, "Programming, Databases");
         values.put(CREATED_AT, currentDate);
-        SQLiteDatabase db = this.getWritableDatabase();
+        
         long insert = db.insert(TABLE_USERS, null, values);
         db.close();
         return insert;
