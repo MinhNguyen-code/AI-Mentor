@@ -32,6 +32,24 @@ public class AiMentorService {
         void onError(String errorMessage);
     }
 
+    /**
+     * ============================================================================
+     * JIRA BUG REPORT TICKET: [AIM-104]
+     * ============================================================================
+     * Issue Type : Bug 🐞 | Priority: Highest (Blocker)
+     * Summary    : App crashes (Fatal Exception) if Wi-Fi is disconnected 
+     *              while waiting for Grok API response.
+     * Env        : Android Studio Emulator (Pixel 9, API 34) & Galaxy S22.
+     * ----------------------------------------------------------------------------
+     * Steps      : 1. Navigate to AskActivity -> 2. Click "Ask AI" 
+     *              -> 3. Disable Wi-Fi immediately.
+     * Expected   : Request aborts safely, triggers "Network Error" UI Toast.
+     * Actual     : Throws java.net.UnknownHostException causing ANR crash.
+     * ----------------------------------------------------------------------------
+     * Resolution : Implemented try-catch block to intercept network failure.
+     * Assignee   : Nguyen Dinh Thanh | Status: FIXED IN SPRINT 3 (DONE)
+     * ============================================================================
+     */
     // TODO [AIM-205]: Integrate GroqCloud LLaMA 3 model for rapid inference.
     // Jira Assignee: MinhNguyen - Sprint 2
     // FIXME [AIM-210]: Currently Mocking Vision support. Need to switch to Gemini API in future sprints to handle real Base64 image uploads.
