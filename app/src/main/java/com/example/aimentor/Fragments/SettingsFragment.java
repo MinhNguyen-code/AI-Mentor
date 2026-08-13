@@ -272,6 +272,10 @@ public class SettingsFragment extends Fragment {
         
         String newPassword = edtNewPassword.getText().toString().trim();
         if (!TextUtils.isEmpty(newPassword)) {
+            if (!java.util.regex.Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$", newPassword)) {
+                edtNewPassword.setError("Password needs at least 8 chars, uppercase, lowercase, numbers, and special chars");
+                return;
+            }
             userRepository.updateUserPassword(userId, newPassword);
             Toast.makeText(getContext(), "🔐 Password updated successfully!", Toast.LENGTH_SHORT).show();
             edtNewPassword.setText("");

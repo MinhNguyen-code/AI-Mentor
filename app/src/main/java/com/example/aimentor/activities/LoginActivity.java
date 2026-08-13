@@ -111,8 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 
-                if (p.length() < 8) {
-                    Toast.makeText(LoginActivity.this, "New password must be at least 8 characters!", Toast.LENGTH_SHORT).show();
+                if (!java.util.regex.Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$", p)) {
+                    Toast.makeText(LoginActivity.this, "Password needs at least 8 chars, uppercase, lowercase, numbers, and special chars", Toast.LENGTH_LONG).show();
                     return;
                 }
                 
