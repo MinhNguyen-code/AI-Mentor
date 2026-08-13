@@ -32,7 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     
     // Regex Patterns
     private static final String USERNAME_PATTERN = "^[a-zA-Z0-9_]{3,15}$";
-    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$";
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     @Override
@@ -143,7 +143,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String input = s.toString();
                 if (!Pattern.matches(PASSWORD_PATTERN, input)) {
-                    tilPassword.setError("Password needs at least 8 characters, uppercase, lowercase, and numbers");
+                    tilPassword.setError("Password needs at least 8 chars, uppercase, lowercase, numbers, and special chars");
                     if (tvPasswordStrength != null) {
                         tvPasswordStrength.setText("Weak 🔴");
                         tvPasswordStrength.setTextColor(getResources().getColor(R.color.error));
