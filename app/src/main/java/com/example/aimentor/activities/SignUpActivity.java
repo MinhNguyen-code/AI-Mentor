@@ -59,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         tvPasswordStrength = findViewById(R.id.tvPasswordStrength);
         
-        ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
+        android.widget.ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
         btnThemeToggle.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {

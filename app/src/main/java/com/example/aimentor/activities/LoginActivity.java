@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         tilPassword = findViewById(R.id.tilPassword);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         
-        ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
+        android.widget.ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
         btnThemeToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
