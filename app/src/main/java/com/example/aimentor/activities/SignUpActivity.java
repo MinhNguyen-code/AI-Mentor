@@ -58,6 +58,16 @@ public class SignUpActivity extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtPhone);
 
         tvPasswordStrength = findViewById(R.id.tvPasswordStrength);
+        
+        ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
+        btnThemeToggle.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                boolean isDark = com.example.aimentor.utils.ThemeUtils.isDarkMode(SignUpActivity.this);
+                com.example.aimentor.utils.ThemeUtils.setDarkMode(SignUpActivity.this, !isDark);
+            }
+        });
+
         btnSignup   = findViewById(R.id.btnSubmit);
         tvLogin     = findViewById(R.id.tvLogin);
         

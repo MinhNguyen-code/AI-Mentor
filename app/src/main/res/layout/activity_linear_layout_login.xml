@@ -19,6 +19,21 @@
             android:layout_height="wrap_content"
             android:padding="24dp">
 
+            <!-- Theme Toggle Button -->
+            <ImageView
+                android:id="@+id/btnThemeToggle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_menu_agenda"
+                app:tint="@color/text_primary"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="Toggle Theme"/>
+
             <!-- Title Header -->
             <TextView
                 android:id="@+id/tvUniversityName"

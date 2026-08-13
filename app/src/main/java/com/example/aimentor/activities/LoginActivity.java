@@ -45,6 +45,15 @@ public class LoginActivity extends AppCompatActivity {
         tilPassword = findViewById(R.id.tilPassword);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         
+        ImageView btnThemeToggle = findViewById(R.id.btnThemeToggle);
+        btnThemeToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isDark = com.example.aimentor.utils.ThemeUtils.isDarkMode(LoginActivity.this);
+                com.example.aimentor.utils.ThemeUtils.setDarkMode(LoginActivity.this, !isDark);
+            }
+        });
+
         userRepository = new UserRepository(LoginActivity.this);
 
         TextView tvSignUp = findViewById(R.id.tvSignUp);

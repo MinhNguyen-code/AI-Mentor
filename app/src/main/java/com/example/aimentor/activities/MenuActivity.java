@@ -30,11 +30,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Menu menu;
     MenuItem menuItemLogout;
+    // Variable to hold database connection for Database Inspector
+    private android.database.sqlite.SQLiteDatabase inspectorDbConnection;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         com.example.aimentor.utils.ThemeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        
+        // Keep DB connection open for Android Studio Database Inspector
+        com.example.aimentor.databases.SqliteDbHelper dbHelper = new com.example.aimentor.databases.SqliteDbHelper(this);
+        inspectorDbConnection = dbHelper.getReadableDatabase();
+
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         drawerLayout = findViewById(R.id.drawerLayout);
         toolbar = findViewById(R.id.toolbar);
