@@ -69,9 +69,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 userHolder.ivAttachedImage.setVisibility(View.VISIBLE);
                 try {
                     android.net.Uri uri = android.net.Uri.parse(chatMessage.getImageUri());
-                    userHolder.ivAttachedImage.setImageURI(uri);
+                    // Proactively check if we still have permission to read this URI
+                    java.io.InputStream is = userHolder.itemView.getContext().getContentResolver().openInputStream(uri);
+                    if (is != null) {
+                        is.close();
+                        userHolder.ivAttachedImage.setImageURI(uri);
+                    }
+                } catch (java.lang.SecurityException se) {
+                    // Permission revoked (e.g., after app restart). Hide image to prevent onMeasure crash.
+                    userHolder.ivAttachedImage.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    userHolder.ivAttachedImage.setVisibility(View.GONE);
                 }
             } else {
                 userHolder.ivAttachedImage.setVisibility(View.GONE);
